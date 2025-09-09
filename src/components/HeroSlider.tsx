@@ -25,7 +25,7 @@ const HeroSlider = () => {
 
       {/* Content Overlay */}
       <div className="absolute inset-0 flex items-center justify-center text-center">
-        <div className="max-w-4xl px-4 sm:px-6 text-foreground animate-fade-up">
+        <div className="max-w-4xl px-4 sm:px-6 text-white animate-fade-up">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 sm:mb-6 drop-shadow-lg leading-tight">
             Účesový Salón TAMA
           </h1>
