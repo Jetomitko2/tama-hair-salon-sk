@@ -8,6 +8,10 @@ const DokoncenaRezervacie = () => {
   const [searchParams] = useSearchParams();
   const reservationId = searchParams.get('id');
 
+  useEffect(() => {
+    document.title = "TAMA-Rezervácia dokončená";
+  }, []);
+
   return (
     <>
       <Navigation />

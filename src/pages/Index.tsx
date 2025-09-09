@@ -9,6 +9,9 @@ import { useEffect } from "react";
 
 const Index = () => {
   useEffect(() => {
+    // Set page title
+    document.title = "TAMA-Domov";
+    
     // Animate elements on scroll
     const observerOptions = {
       threshold: 0.1,

@@ -1,7 +1,12 @@
+import { useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock, Phone, MapPin, Calendar } from "lucide-react";
 const Contact = () => {
+  useEffect(() => {
+    document.title = "TAMA-Kontakt";
+  }, []);
+
   return <>
       <Navigation />
       <div className="pt-16 min-h-screen bg-muted/50">

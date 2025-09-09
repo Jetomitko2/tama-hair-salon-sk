@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { Button } from "@/components/ui/button";
@@ -16,6 +16,10 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 
 const Rezervacia = () => {
+  useEffect(() => {
+    document.title = "TAMA-Rezervácia";
+  }, []);
+
   const navigate = useNavigate();
   const { toast } = useToast();
   const [formData, setFormData] = useState({

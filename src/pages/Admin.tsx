@@ -29,6 +29,7 @@ const Admin = () => {
   const { toast } = useToast();
 
   useEffect(() => {
+    document.title = "TAMA-Admin";
     fetchReservations();
   }, []);
 
