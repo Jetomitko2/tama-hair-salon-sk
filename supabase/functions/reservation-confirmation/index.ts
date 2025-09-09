@@ -75,9 +75,11 @@ const handler = async (req: Request): Promise<Response> => {
     const adminEmails = ['tamara.gaborova28@gmail.com', 'timotejkucharcik116@gmail.com'];
     console.log('Sending admin notifications to:', adminEmails);
     
+    const adminEmailResults = [];
+    
     for (const adminEmail of adminEmails) {
       try {
-        console.log(`Sending admin notification to: ${adminEmail}`);
+        console.log(`=== SENDING ADMIN NOTIFICATION TO: ${adminEmail} ===`);
         const adminEmailResponse = await resend.emails.send({
           from: "Salón TAMA <system@kadernictvotama.sk>",
           to: [adminEmail],
@@ -127,12 +129,22 @@ const handler = async (req: Request): Promise<Response> => {
             </div>
           `,
         });
-        console.log(`Admin notification sent successfully to ${adminEmail}:`, adminEmailResponse);
+        console.log(`✅ SUCCESS: Admin notification sent to ${adminEmail}:`, adminEmailResponse);
+        adminEmailResults.push({ email: adminEmail, success: true, response: adminEmailResponse });
       } catch (adminEmailError) {
-        console.error(`Error sending admin notification to ${adminEmail}:`, adminEmailError);
+        console.error(`❌ ERROR: Failed to send admin notification to ${adminEmail}:`, adminEmailError);
+        adminEmailResults.push({ email: adminEmail, success: false, error: adminEmailError });
       }
     }
 
+    console.log('=== ADMIN EMAIL RESULTS SUMMARY ===');
+    adminEmailResults.forEach(result => {
+      if (result.success) {
+        console.log(`✅ ${result.email}: SUCCESS`);
+      } else {
+        console.log(`❌ ${result.email}: FAILED - ${result.error?.message || 'Unknown error'}`);
+      }
+    });
     console.log('All admin notifications processed.');
 
     return new Response(JSON.stringify({ success: true, data: emailResponse }), {
