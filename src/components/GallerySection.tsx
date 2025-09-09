@@ -2,44 +2,27 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
-
 const GallerySection = () => {
-  const galleryImages = [
-    "/lovable-uploads/cde560d4-f227-4cf1-a4bf-2625983f178f.png",
-    "/lovable-uploads/ae4c81c8-e177-4364-99c5-f95e7cf5c592.png", 
-    "/lovable-uploads/3da40f6d-1288-4925-bdeb-888c0f30feed.png"
-  ];
-
-  return (
-    <section className="py-12 sm:py-16 md:py-20 bg-background">
+  const galleryImages = ["/lovable-uploads/cde560d4-f227-4cf1-a4bf-2625983f178f.png", "/lovable-uploads/ae4c81c8-e177-4364-99c5-f95e7cf5c592.png", "/lovable-uploads/3da40f6d-1288-4925-bdeb-888c0f30feed.png"];
+  return <section className="py-12 sm:py-16 md:py-20 bg-background">
       <div className="container mx-auto px-4 sm:px-6">
         <div className="text-center mb-12 sm:mb-16 animate-fade-up">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-3 sm:mb-4">
             Fotogaléria
           </h2>
-          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto px-2">
-            Pozrite si našu prácu a inšpirujte sa pre váš nový vzhľad
-          </p>
+          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto px-2">Pozrite si noju prácu a inšpirujte sa pre váš nový vzhľad</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
-          {galleryImages.map((image, index) => (
-            <Card 
-              key={index} 
-              className="overflow-hidden salon-shadow-card hover:salon-shadow-elegant transition-spring hover:-translate-y-2 animate-fade-up"
-              style={{ animationDelay: `${index * 0.2}s` }}
-            >
+          {galleryImages.map((image, index) => <Card key={index} className="overflow-hidden salon-shadow-card hover:salon-shadow-elegant transition-spring hover:-translate-y-2 animate-fade-up" style={{
+          animationDelay: `${index * 0.2}s`
+        }}>
               <CardContent className="p-0">
                 <div className="aspect-square overflow-hidden">
-                  <img
-                    src={image}
-                    alt={`Účes ${index + 1}`}
-                    className="w-full h-full object-cover transition-smooth hover:scale-105 animate-camera-shake"
-                  />
+                  <img src={image} alt={`Účes ${index + 1}`} className="w-full h-full object-cover transition-smooth hover:scale-105 animate-camera-shake" />
                 </div>
               </CardContent>
-            </Card>
-          ))}
+            </Card>)}
         </div>
 
         <div className="text-center animate-fade-up">
@@ -51,8 +34,6 @@ const GallerySection = () => {
           </Link>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default GallerySection;
