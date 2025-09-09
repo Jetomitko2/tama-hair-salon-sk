@@ -32,6 +32,16 @@ const Gallery = () => {
 
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
+  const getCameraShakeClass = (index: number) => {
+    const shakeClasses = [
+      'animate-camera-shake',
+      'animate-camera-shake-2', 
+      'animate-camera-shake-3',
+      'animate-camera-shake-4'
+    ];
+    return shakeClasses[index % 4];
+  };
+
   const openLightbox = (index: number) => {
     setSelectedImageIndex(index);
   };
@@ -78,7 +88,7 @@ const Gallery = () => {
                   <img
                     src={image}
                     alt={`Účes ${index + 1}`}
-                    className="w-full h-full object-cover transition-smooth hover:scale-105 animate-camera-shake"
+                    className={`w-full h-full object-cover transition-smooth hover:scale-105 ${getCameraShakeClass(index)}`}
                   />
                 </div>
               </div>
