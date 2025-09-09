@@ -23,6 +23,7 @@ interface Reservation {
 const Admin = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [processingId, setProcessingId] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -51,12 +52,16 @@ const Admin = () => {
   };
 
   const updateReservationStatus = async (id: string, status: 'confirmed' | 'rejected') => {
+    if (processingId) return; // Prevent multiple simultaneous requests
+    
     try {
+      setProcessingId(id);
+      
       // Get reservation details before updating
       const reservation = reservations.find(res => res.id === id);
       if (!reservation) throw new Error('Rezervácia nenájdená');
 
-      // Update status in database
+      // Update status in database first
       const { error } = await supabase
         .from('reservations')
         .update({ status })
@@ -64,8 +69,15 @@ const Admin = () => {
 
       if (error) throw error;
 
-      // Send status email to customer
-      const emailResponse = await supabase.functions.invoke('send-status-email', {
+      // Update UI immediately
+      setReservations(prev => 
+        prev.map(res => 
+          res.id === id ? { ...res, status } : res
+        )
+      );
+
+      // Send email in background (don't wait for it to complete)
+      supabase.functions.invoke('send-status-email', {
         body: {
           reservationNumber: reservation.reservation_number,
           fullName: reservation.full_name,
@@ -75,21 +87,20 @@ const Admin = () => {
           time: reservation.reservation_time,
           status
         }
+      }).then(emailResponse => {
+        if (emailResponse.error) {
+          console.error('Error sending status email:', emailResponse.error);
+          toast({
+            title: "Upozornenie",
+            description: `Rezervácia bola ${status === 'confirmed' ? 'potvrdená' : 'odmietnutá'}, ale email sa nepodarilo poslať`,
+            variant: "destructive",
+          });
+        }
       });
-
-      if (emailResponse.error) {
-        console.error('Error sending status email:', emailResponse.error);
-      }
-
-      setReservations(prev => 
-        prev.map(res => 
-          res.id === id ? { ...res, status } : res
-        )
-      );
 
       toast({
         title: "Úspech",
-        description: `Rezervácia bola ${status === 'confirmed' ? 'potvrdená' : 'odmietnutá'} a email bol odoslaný klientovi`,
+        description: `Rezervácia bola ${status === 'confirmed' ? 'potvrdená' : 'odmietnutá'}`,
       });
     } catch (error) {
       console.error('Error updating reservation:', error);
@@ -98,6 +109,8 @@ const Admin = () => {
         description: "Nepodarilo sa aktualizovať rezerváciu",
         variant: "destructive",
       });
+    } finally {
+      setProcessingId(null);
     }
   };
 
@@ -188,19 +201,21 @@ const Admin = () => {
                     <div className="flex space-x-2 pt-4">
                       <Button 
                         onClick={() => updateReservationStatus(reservation.id, 'confirmed')}
+                        disabled={processingId === reservation.id}
                         className="flex items-center space-x-2"
                       >
                         <CheckCircle className="h-4 w-4" />
-                        <span>Potvrdiť</span>
+                        <span>{processingId === reservation.id ? 'Spracováva sa...' : 'Potvrdiť'}</span>
                       </Button>
                       
                       <Button 
                         variant="destructive"
                         onClick={() => updateReservationStatus(reservation.id, 'rejected')}
+                        disabled={processingId === reservation.id}
                         className="flex items-center space-x-2"
                       >
                         <XCircle className="h-4 w-4" />
-                        <span>Odmietnuť</span>
+                        <span>{processingId === reservation.id ? 'Spracováva sa...' : 'Odmietnuť'}</span>
                       </Button>
                     </div>
                   )}
