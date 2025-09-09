@@ -127,7 +127,7 @@ const Gallery = () => {
                 <img
                   src="/lovable-uploads/0c2a7ab3-61e4-48b3-990f-04284622dc90.png"
                   alt="Účes - po"
-                  className="w-full h-full object-cover object-[center_10%]"
+                  className="w-full h-full object-cover object-[center_5%]"
                 />
               </div>
               
