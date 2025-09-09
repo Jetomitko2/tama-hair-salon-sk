@@ -1,7 +1,4 @@
-import { useState } from "react";
-
 const SalonInteriorSection = () => {
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
   
   const images = [
     "/lovable-uploads/4c00f729-d38b-4bb6-bc33-232f721c112d.png",
@@ -23,11 +20,7 @@ const SalonInteriorSection = () => {
         
         <div className="grid md:grid-cols-3 gap-8">
           {images.map((image, index) => (
-            <div 
-              key={index}
-              className="group cursor-pointer"
-              onClick={() => setSelectedImage(image)}
-            >
+            <div key={index} className="group">
               <div className="bg-white p-6 rounded-full salon-shadow-card transition-smooth hover:salon-shadow-elegant group-hover:scale-105">
                 <div className="aspect-square rounded-full overflow-hidden">
                   <img
@@ -41,28 +34,6 @@ const SalonInteriorSection = () => {
           ))}
         </div>
       </div>
-
-      {/* Lightbox */}
-      {selectedImage && (
-        <div 
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div className="relative max-w-4xl max-h-[90vh]">
-            <img
-              src={selectedImage}
-              alt="Detail interiéru salónu"
-              className="w-full h-auto object-contain rounded-lg"
-            />
-            <button
-              onClick={() => setSelectedImage(null)}
-              className="absolute top-4 right-4 text-white text-2xl bg-black/50 rounded-full w-10 h-10 flex items-center justify-center hover:bg-black/70 transition-smooth"
-            >
-              ×
-            </button>
-          </div>
-        </div>
-      )}
     </section>
   );
 };

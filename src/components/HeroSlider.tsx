@@ -14,7 +14,7 @@ const HeroSlider = () => {
         const shakeAnimations = ["animate-camera-shake", "animate-camera-shake-2", "animate-camera-shake-3", "animate-camera-shake-4", "animate-camera-shake"];
         return (
           <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImage ? "opacity-100" : "opacity-0"}`}>
-            <img src={image} alt={`Účes ${index + 1}`} className={`w-full h-full object-cover ${shakeAnimations[index % shakeAnimations.length]}`} />
+            <img src={image} alt={`Účes ${index + 1}`} className={`w-full h-full object-cover ${shakeAnimations[index]}`} />
             <div className="absolute inset-0 salon-gradient-hero" />
           </div>
         );
