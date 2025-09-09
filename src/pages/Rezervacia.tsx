@@ -33,16 +33,26 @@ const Rezervacia = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const services = [
-    "Pánske strihanie",
-    "Dámske strihanie", 
+    "Stríhanie na sucho krátke vlasy",
+    "Stríhanie na sucho polodlhé vlasy",
+    "Stríhanie na sucho dlhé vlasy",
+    "Strihanie fúkaná krátke vlasy",
+    "Strihanie fúkaná polodlhé vlasy",
+    "Strihanie fúkaná dlhé vlasy",
+    "Farbenie krátke vlasy",
+    "Farbenie polodlhé vlasy",
+    "Farbenie dlhé vlasy",
+    "Trvalá krátke vlasy",
+    "Trvalá polodlhé vlasy",
+    "Trvalá dlhé vlasy",
+    "Čistenie Malibu C krátke",
+    "Čistenie Malibu C polodlhé",
+    "Čistenie Malibu C dlhé",
     "Melírovanie",
     "Detské strihanie",
-    "Farbenie vlasov",
     "Spoločenské účesy",
     "Svadobné účesy",
-    "Čistenie vlasov Malibu C",
-    "Regeneračné zábaly",
-    "Objemová Trvalá"
+    "Regeneračné zábaly"
   ];
 
   const timeSlots = [
