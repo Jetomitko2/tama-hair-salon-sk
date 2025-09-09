@@ -125,7 +125,7 @@ const Gallery = () => {
                 style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
               >
                 <img
-                  src="/lovable-uploads/297bf00f-5603-4a36-9c77-4af9929b880b.png"
+                  src="/lovable-uploads/0c2a7ab3-61e4-48b3-990f-04284622dc90.png"
                   alt="Účes - po"
                   className="w-full h-full object-cover object-[center_35%]"
                 />
