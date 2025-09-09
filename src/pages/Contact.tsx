@@ -47,7 +47,7 @@ const Contact = () => {
                 </div>
                 <div className="flex justify-between items-center border-t pt-2">
                   <span className="text-muted-foreground">Sobota</span>
-                  <span className="text-red-500">Zatvorené</span>
+                  <span className="text-accent font-semibold">Na objednávku</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">Nedeľa</span>

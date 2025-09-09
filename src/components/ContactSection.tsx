@@ -12,7 +12,8 @@ const ContactSection = () => {
             Boli ste zaujatí?
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Kontaktujte nás a dohodnite si termín pre váš nový vzhľad
+            Kontaktujte nás a dohodnite si termín pre váš nový vzhľad<br />
+            <span className="text-accent font-medium">Sobota na objednávku</span>
           </p>
         </div>
 
