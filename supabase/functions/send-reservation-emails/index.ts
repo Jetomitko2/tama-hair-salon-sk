@@ -32,12 +32,13 @@ const handler = async (req: Request): Promise<Response> => {
     const customerEmail = await resend.emails.send({
       from: "Salón TAMA <onboarding@resend.dev>",
       to: [email],
-      subject: `Potvrdenie rezervácie - ${reservationNumber}`,
+      subject: `Ďakujeme za rezerváciu - ${reservationNumber}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h1 style="color: #4CAF50;">Rezervácia prijatá</h1>
+          <h1 style="color: #4CAF50;">Ďakujeme za Vašu rezerváciu</h1>
           <p>Milý/á ${fullName},</p>
-          <p>Ďakujeme za Vašu rezerváciu! Vaša žiadosť bola prijatá a čaká na potvrdenie.</p>
+          <p>Ďakujeme za Vašu rezerváciu <strong>${reservationNumber}</strong> na <strong>${time}</strong>, <strong>${date}</strong>.</p>
+          <p>Najprv ju musíme prijať. Po prijatí Vám dáme vedieť prostredníctvom e-mailu.</p>
           
           <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
             <h3>Detaily rezervácie:</h3>
@@ -45,6 +46,7 @@ const handler = async (req: Request): Promise<Response> => {
             <p><strong>Služba:</strong> ${service}</p>
             <p><strong>Dátum:</strong> ${date}</p>
             <p><strong>Čas:</strong> ${time}</p>
+            <p><strong>Stav:</strong> Čaká na potvrdenie</p>
           </div>
           
           <p>Ozveме sa Vám čoskoro s potvrdením termínu.</p>
