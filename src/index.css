@@ -14,7 +14,7 @@
     --salon-accent: 340 60% 65%;
     --salon-muted: 340 5% 95%;
     /* Gradients & Effects */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--salon-primary)), hsl(var(--salon-primary-light)));
+    --gradient-primary: linear-gradient(135deg, hsl(0 0% 15%), hsl(0 0% 35%));
     --gradient-secondary: linear-gradient(135deg, hsl(var(--salon-secondary)), hsl(var(--salon-muted)));
     --gradient-hero: linear-gradient(135deg, hsl(var(--salon-primary) / 0.9), hsl(var(--salon-accent) / 0.8));
     
