@@ -22,7 +22,7 @@ const ProductsSection = () => {
           <Card className="max-w-2xl salon-shadow-elegant hover:salon-shadow-card transition-spring hover:-translate-y-2 animate-fade-up bg-background/95 backdrop-blur-sm">
             <CardContent className="p-6 sm:p-8 text-center">
               <div className="w-24 h-24 sm:w-32 sm:h-32 mx-auto mb-4 sm:mb-6 overflow-hidden rounded-xl">
-                <img src="/lovable-uploads/723b5118-c7fb-45b8-8d4a-413279b3428d.png" alt="FarmaVita produkty" className="w-full h-full object-cover" />
+                <img src="/lovable-uploads/2f040f4c-536a-44a1-8200-8e52e55944b8.png" alt="FarmaVita produkty" className="w-full h-full object-cover" />
               </div>
               
               <h3 className="text-xl sm:text-2xl font-bold text-primary mb-3 sm:mb-4">
