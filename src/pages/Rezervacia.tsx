@@ -88,8 +88,8 @@ const Rezervacia = () => {
 
       if (error) throw error;
 
-      // Send notification emails
-      await supabase.functions.invoke('send-reservation-emails', {
+      // Send confirmation email
+      await supabase.functions.invoke('reservation-confirmation', {
         body: {
           reservationNumber,
           fullName: formData.fullName,

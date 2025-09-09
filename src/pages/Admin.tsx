@@ -74,7 +74,7 @@ const Admin = () => {
       );
 
       // Send status email
-      const { error: emailError } = await supabase.functions.invoke('send-status-email', {
+      const { error: emailError } = await supabase.functions.invoke('reservation-status', {
         body: {
           reservationNumber: reservation.reservation_number,
           fullName: reservation.full_name,

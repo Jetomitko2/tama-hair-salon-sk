@@ -5,8 +5,8 @@ enabled = true
 site_url = "http://localhost:3000"
 additional_redirect_urls = ["https://lovable.dev"]
 
-[functions.send-reservation-emails]
+[functions.reservation-confirmation]
 verify_jwt = false
 
-[functions.send-status-email]
+[functions.reservation-status]
 verify_jwt = false
