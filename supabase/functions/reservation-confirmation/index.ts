@@ -28,7 +28,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log(`Sending confirmation email to: ${email} for reservation: ${reservationNumber}`);
 
     const emailResponse = await resend.emails.send({
-      from: "Salón TAMA <onboarding@resend.dev>",
+      from: "Salón TAMA <timotejkucharcik116@gmail.com>",
       to: [email],
       subject: `Ďakujeme za rezerváciu - ${reservationNumber}`,
       html: `
