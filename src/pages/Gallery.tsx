@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -31,43 +31,6 @@ const Gallery = () => {
   ];
 
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
-  const [sliderPosition, setSliderPosition] = useState(25); // Default position at 25%
-  const sliderRef = useRef<HTMLDivElement>(null);
-
-  const handleSliderDrag = (e: React.MouseEvent) => {
-    if (!sliderRef.current) return;
-    
-    const rect = sliderRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = (x / rect.width) * 100;
-    
-    // Clamp between 0 and 100
-    const clampedPercentage = Math.max(0, Math.min(100, percentage));
-    setSliderPosition(clampedPercentage);
-  };
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    e.preventDefault();
-    
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!sliderRef.current) return;
-      
-      const rect = sliderRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const percentage = (x / rect.width) * 100;
-      
-      const clampedPercentage = Math.max(0, Math.min(100, percentage));
-      setSliderPosition(clampedPercentage);
-    };
-    
-    const handleMouseUp = () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-    };
-    
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  };
 
   const openLightbox = (index: number) => {
     setSelectedImageIndex(index);
@@ -101,48 +64,6 @@ const Gallery = () => {
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               Pozrite si našu prácu a inšpirujte sa pre váš nový vzhľad
             </p>
-          </div>
-
-          {/* Image Comparison Slider */}
-          <div className="mb-16 animate-fade-up">
-            <div 
-              ref={sliderRef}
-              className="relative w-full h-[200px] md:h-[250px] overflow-hidden rounded-lg cursor-ew-resize select-none"
-              onClick={handleSliderDrag}
-            >
-              {/* First Image (Right side - visible when slider is to the right) */}
-              <div className="absolute inset-0">
-                <img
-                  src="/lovable-uploads/b229ab4e-c72d-4a97-8b46-bae51ec0a35c.png"
-                  alt="Účes - pred"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              
-              {/* Second Image (Left side - visible when slider is to the left) */}
-              <div 
-                className="absolute inset-0 overflow-hidden"
-                style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
-              >
-                <img
-                  src="/lovable-uploads/312f95e0-04a5-441f-95e8-5bdbad0f82a9.png"
-                  alt="Účes - po"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              
-              {/* Draggable Divider */}
-              <div 
-                className="absolute top-0 bottom-0 w-1 bg-white shadow-lg cursor-ew-resize z-10"
-                style={{ left: `${sliderPosition}%` }}
-                onMouseDown={handleMouseDown}
-              >
-                <div className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center">
-                  <div className="w-1 h-4 bg-gray-400 rounded-full mx-0.5"></div>
-                  <div className="w-1 h-4 bg-gray-400 rounded-full mx-0.5"></div>
-                </div>
-              </div>
-            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
