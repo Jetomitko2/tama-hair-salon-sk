@@ -72,7 +72,7 @@ const handler = async (req: Request): Promise<Response> => {
     console.log("Confirmation email sent successfully:", emailResponse);
 
     // Send notification emails to admins
-    const adminEmails = ['tamara.gaborova28@gmail.com', 'timotejkucharcik116@gmail.com'];
+    const adminEmails = ['tamara.gaborova28@gmail.com', 'timotej@kadernictvotama.sk'];
     console.log('Sending admin notifications to:', adminEmails);
     
     const adminEmailResults = [];
