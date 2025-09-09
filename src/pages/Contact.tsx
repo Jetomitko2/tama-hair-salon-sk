@@ -13,7 +13,7 @@ const Contact = () => {
               Kontakt
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Radi sa o vás postaráme. Kontaktujte nás alebo si dohodnite termín
+              Rád sa o vás postarám. Kontaktujte ma alebo si dohodnite termín
             </p>
           </div>
 
