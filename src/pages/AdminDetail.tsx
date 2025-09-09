@@ -56,7 +56,7 @@ const AdminDetail = () => {
     }
   };
 
-  const updateReservationStatus = async (status: 'confirmed' | 'rejected') => {
+  const updateReservationStatus = async (status: 'accepted' | 'rejected') => {
     if (!reservation || processing) return;
     
     try {
@@ -78,7 +78,7 @@ const AdminDetail = () => {
           service: reservation.service,
           date: new Date(reservation.reservation_date).toLocaleDateString('sk-SK'),
           time: reservation.reservation_time,
-          status
+          status: status === 'accepted' ? 'confirmed' : 'rejected' // Convert for email
         }
       });
 
@@ -90,7 +90,7 @@ const AdminDetail = () => {
 
       toast({
         title: "Úspech",
-        description: `Rezervácia bola ${status === 'confirmed' ? 'potvrdená' : 'odmietnutá'}`,
+        description: `Rezervácia bola ${status === 'accepted' ? 'potvrdená' : 'odmietnutá'}`,
       });
     } catch (error) {
       console.error('Error updating reservation:', error);
@@ -106,7 +106,7 @@ const AdminDetail = () => {
 
   const getStatusBadge = (status: string) => {
     switch (status) {
-      case 'confirmed':
+      case 'accepted':
         return <Badge className="bg-green-500 text-white">Potvrdená</Badge>;
       case 'rejected':
         return <Badge className="bg-red-500 text-white">Odmietnutá</Badge>;
@@ -201,7 +201,7 @@ const AdminDetail = () => {
             {reservation.status === 'pending' && (
               <div className="flex space-x-2 pt-4">
                 <Button 
-                  onClick={() => updateReservationStatus('confirmed')}
+                  onClick={() => updateReservationStatus('accepted')}
                   disabled={processing}
                   className="flex items-center space-x-2"
                 >
