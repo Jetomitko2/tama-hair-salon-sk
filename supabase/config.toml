@@ -2,8 +2,8 @@ project_id = "hywvxiezdxhvfwqzlcdj"
 
 [auth]
 enabled = true
-site_url = "http://localhost:3000"
-additional_redirect_urls = ["https://lovable.dev"]
+site_url = "https://yourusername.github.io/yourrepo"
+additional_redirect_urls = ["https://lovable.dev", "http://localhost:3000", "https://yourdomain.com"]
 
 [functions.reservation-confirmation]
 verify_jwt = false
