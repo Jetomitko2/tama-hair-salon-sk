@@ -1,17 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Sparkles, Leaf, Shield } from "lucide-react";
-
 const ProductsSection = () => {
-  return (
-    <section 
-      className="py-20 bg-muted/50 relative"
-      style={{
-        backgroundImage: "url('/lovable-uploads/8d3a35ed-42c1-4dd6-9d7f-bfc5889f0972.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat"
-      }}
-    >
+  return <section className="py-20 bg-muted/50 relative" style={{
+    backgroundImage: "url('/lovable-uploads/8d3a35ed-42c1-4dd6-9d7f-bfc5889f0972.png')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat"
+  }}>
       {/* Overlay for better text readability */}
       <div className="absolute inset-0 bg-background/80"></div>
       
@@ -20,20 +15,14 @@ const ProductsSection = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
             Produkty
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Používame len tie najkvalitnejšie produkty pre starostlivosť o vaše vlasy
-          </p>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Používam len tie najkvalitnejšie produkty pre starostlivosť o vaše vlasy</p>
         </div>
 
         <div className="flex justify-center">
           <Card className="max-w-2xl salon-shadow-elegant hover:salon-shadow-card transition-spring hover:-translate-y-2 animate-fade-up bg-background/95 backdrop-blur-sm">
             <CardContent className="p-8 text-center">
               <div className="w-32 h-32 mx-auto mb-6 overflow-hidden rounded-xl">
-                <img 
-                  src="/lovable-uploads/723b5118-c7fb-45b8-8d4a-413279b3428d.png" 
-                  alt="FarmaVita produkty" 
-                  className="w-full h-full object-cover"
-                />
+                <img src="/lovable-uploads/723b5118-c7fb-45b8-8d4a-413279b3428d.png" alt="FarmaVita produkty" className="w-full h-full object-cover" />
               </div>
               
               <h3 className="text-2xl font-bold text-primary mb-4">
@@ -64,8 +53,6 @@ const ProductsSection = () => {
           </Card>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default ProductsSection;
