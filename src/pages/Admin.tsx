@@ -33,19 +33,27 @@ const Admin = () => {
   }, []);
 
   const fetchReservations = async () => {
+    console.log('Fetching reservations...');
     try {
       const { data, error } = await supabase
         .from('reservations')
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      console.log('Reservations query result:', { data, error });
+
+      if (error) {
+        console.error('Database error:', error);
+        throw error;
+      }
+      
+      console.log('Fetched reservations:', data?.length || 0);
       setReservations(data || []);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error fetching reservations:', error);
       toast({
         title: "Chyba",
-        description: "Nepodarilo sa načítať rezervácie",
+        description: `Nepodarilo sa načítať rezervácie: ${error.message || 'Neznáma chyba'}`,
         variant: "destructive",
       });
     } finally {
@@ -56,19 +64,35 @@ const Admin = () => {
   const updateReservationStatus = async (id: string, status: 'confirmed' | 'rejected') => {
     if (processingId) return;
     
+    console.log('Updating reservation status:', { id, status });
+    
     try {
       setProcessingId(id);
       
       const reservation = reservations.find(res => res.id === id);
-      if (!reservation) throw new Error('Rezervácia nenájdená');
+      if (!reservation) {
+        console.error('Rezervácia nenájdená:', id);
+        throw new Error('Rezervácia nenájdená');
+      }
 
-      const { error } = await supabase
+      console.log('Found reservation:', reservation);
+
+      // Update status in database
+      const { data, error } = await supabase
         .from('reservations')
         .update({ status })
-        .eq('id', id);
+        .eq('id', id)
+        .select()
+        .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error('Database update error:', error);
+        throw error;
+      }
 
+      console.log('Database updated successfully:', data);
+
+      // Update local state
       setReservations(prev => 
         prev.map(res => 
           res.id === id ? { ...res, status } : res
@@ -76,31 +100,46 @@ const Admin = () => {
       );
 
       // Send status email
-      const { error: emailError } = await supabase.functions.invoke('reservation-status', {
-        body: {
-          reservationNumber: reservation.reservation_number,
-          fullName: reservation.full_name,
-          email: reservation.email,
-          service: reservation.service,
-          date: new Date(reservation.reservation_date).toLocaleDateString('sk-SK'),
-          time: reservation.reservation_time,
-          status
-        }
-      });
+      console.log('Sending status email...');
+      try {
+        const { data: emailData, error: emailError } = await supabase.functions.invoke('reservation-status', {
+          body: {
+            reservationNumber: reservation.reservation_number,
+            fullName: reservation.full_name,
+            email: reservation.email,
+            service: reservation.service,
+            date: new Date(reservation.reservation_date).toLocaleDateString('sk-SK'),
+            time: reservation.reservation_time,
+            status
+          }
+        });
 
-      if (emailError) {
-        console.error('Email error:', emailError);
+        if (emailError) {
+          console.error('Email error:', emailError);
+          // Don't throw error for email issues, just log them
+        } else {
+          console.log('Email sent successfully:', emailData);
+        }
+      } catch (emailError) {
+        console.error('Email sending failed:', emailError);
+        // Don't fail the whole operation if email fails
       }
 
       toast({
         title: "Úspech",
         description: `Rezervácia bola ${status === 'confirmed' ? 'potvrdená' : 'odmietnutá'}`,
       });
-    } catch (error) {
+      
+      // Refresh the reservations list
+      setTimeout(() => {
+        fetchReservations();
+      }, 1000);
+      
+    } catch (error: any) {
       console.error('Error updating reservation:', error);
       toast({
         title: "Chyba",
-        description: "Nepodarilo sa aktualizovať rezerváciu",
+        description: `Nepodarilo sa aktualizovať rezerváciu: ${error.message || 'Neznáma chyba'}`,
         variant: "destructive",
       });
     } finally {
