@@ -12,7 +12,6 @@ const Navigation = () => {
     { path: "/galeria", label: "Galéria" },
     { path: "/rezervacia", label: "Rezervácia" },
     { path: "/kontakt", label: "Kontakt" },
-    { path: "/admin", label: "Admin" },
   ];
 
   const isActive = (path: string) => location.pathname === path;
