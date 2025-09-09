@@ -48,7 +48,7 @@ const ContactSection = () => {
           </Link>
           <Link to="/kontakt">
             <Button size="lg" className="salon-gradient-primary text-white font-semibold px-8 py-3 transition-spring hover:scale-105">
-              Kontaktujte nás
+              Kontaktujte ma
               <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
