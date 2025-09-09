@@ -26,7 +26,14 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { reservationNumber, fullName, email, service, date, time, status }: StatusEmailRequest = await req.json();
+    console.log("=== SEND STATUS EMAIL FUNCTION STARTED ===");
+    
+    const requestBody = await req.text();
+    console.log("Request body received:", requestBody);
+    
+    const { reservationNumber, fullName, email, service, date, time, status }: StatusEmailRequest = JSON.parse(requestBody);
+    
+    console.log("Parsed request data:", { reservationNumber, fullName, email, status });
 
     console.log("Sending status email for reservation:", reservationNumber, "Status:", status);
 
@@ -34,6 +41,8 @@ const handler = async (req: Request): Promise<Response> => {
     const statusText = isConfirmed ? 'potvrdená' : 'odmietnutá';
     const statusColor = isConfirmed ? '#4CAF50' : '#f44336';
 
+    console.log("About to send email via Resend...");
+    
     const emailResponse = await resend.emails.send({
       from: "Salón TAMA <onboarding@resend.dev>",
       to: [email],
@@ -71,7 +80,7 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
-    console.log("Status email sent:", emailResponse);
+    console.log("Email response from Resend:", JSON.stringify(emailResponse, null, 2));
 
     return new Response(JSON.stringify({ 
       success: true, 
@@ -84,9 +93,10 @@ const handler = async (req: Request): Promise<Response> => {
       },
     });
   } catch (error: any) {
-    console.error("Error in send-status-email function:", error);
+    console.error("ERROR in send-status-email function:", error);
+    console.error("Error stack:", error.stack);
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: error.message, stack: error.stack }),
       {
         status: 500,
         headers: { "Content-Type": "application/json", ...corsHeaders },

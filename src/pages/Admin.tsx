@@ -55,19 +55,30 @@ const Admin = () => {
     if (processingId) return; // Prevent multiple simultaneous requests
     
     try {
+      console.log("=== ADMIN: Starting reservation update ===");
+      console.log("Reservation ID:", id, "New status:", status);
+      
       setProcessingId(id);
       
       // Get reservation details before updating
       const reservation = reservations.find(res => res.id === id);
       if (!reservation) throw new Error('Rezervácia nenájdená');
 
+      console.log("Found reservation:", reservation);
+
       // Update status in database first
+      console.log("Updating database...");
       const { error } = await supabase
         .from('reservations')
         .update({ status })
         .eq('id', id);
 
-      if (error) throw error;
+      if (error) {
+        console.error("Database update error:", error);
+        throw error;
+      }
+      
+      console.log("Database updated successfully");
 
       // Update UI immediately
       setReservations(prev => 
@@ -75,6 +86,8 @@ const Admin = () => {
           res.id === id ? { ...res, status } : res
         )
       );
+
+      console.log("UI updated, now sending email...");
 
       // Send email in background (don't wait for it to complete)
       supabase.functions.invoke('send-status-email', {
@@ -88,6 +101,7 @@ const Admin = () => {
           status
         }
       }).then(emailResponse => {
+        console.log("Email function response:", emailResponse);
         if (emailResponse.error) {
           console.error('Error sending status email:', emailResponse.error);
           toast({
@@ -95,7 +109,11 @@ const Admin = () => {
             description: `Rezervácia bola ${status === 'confirmed' ? 'potvrdená' : 'odmietnutá'}, ale email sa nepodarilo poslať`,
             variant: "destructive",
           });
+        } else {
+          console.log("Email sent successfully!");
         }
+      }).catch(emailError => {
+        console.error("Email function error:", emailError);
       });
 
       toast({
@@ -110,6 +128,7 @@ const Admin = () => {
         variant: "destructive",
       });
     } finally {
+      console.log("=== ADMIN: Finished reservation update ===");
       setProcessingId(null);
     }
   };
