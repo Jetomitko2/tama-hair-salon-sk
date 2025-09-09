@@ -14,13 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      reservations: {
+        Row: {
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          phone: string
+          reservation_date: string
+          reservation_number: string
+          reservation_time: string
+          service: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          phone: string
+          reservation_date: string
+          reservation_number: string
+          reservation_time: string
+          service: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          phone?: string
+          reservation_date?: string
+          reservation_number?: string
+          reservation_time?: string
+          service?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      generate_reservation_number: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never
