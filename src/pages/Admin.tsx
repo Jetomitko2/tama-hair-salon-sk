@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Navigation from "@/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Calendar, Clock, User, Phone, Mail, CheckCircle, XCircle } from "lucide-react";
+import { Calendar, Clock, User, Phone, Mail, CheckCircle, XCircle, LogOut, Eye } from "lucide-react";
 
 interface Reservation {
   id: string;
@@ -21,6 +22,7 @@ interface Reservation {
 }
 
 const Admin = () => {
+  const navigate = useNavigate();
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
   const [processingId, setProcessingId] = useState<string | null>(null);
@@ -106,6 +108,11 @@ const Admin = () => {
     }
   };
 
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate('/auth');
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'confirmed':
@@ -132,7 +139,17 @@ const Admin = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       <div className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">Správa rezervácií</h1>
+        <div className="flex items-center justify-between mb-8">
+          <h1 className="text-3xl font-bold">Správa rezervácií</h1>
+          <Button 
+            variant="outline" 
+            onClick={handleLogout}
+            className="flex items-center space-x-2"
+          >
+            <LogOut className="h-4 w-4" />
+            <span>Odhlásiť sa</span>
+          </Button>
+        </div>
         
         <div className="grid gap-6">
           {reservations.length === 0 ? (
@@ -211,6 +228,17 @@ const Admin = () => {
                       </Button>
                     </div>
                   )}
+
+                  <div className="flex justify-end pt-4">
+                    <Button 
+                      variant="outline"
+                      onClick={() => navigate(`/admin/${reservation.reservation_number}`)}
+                      className="flex items-center space-x-2"
+                    >
+                      <Eye className="h-4 w-4" />
+                      <span>Detail</span>
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))

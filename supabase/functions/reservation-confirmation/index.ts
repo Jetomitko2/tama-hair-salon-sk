@@ -27,6 +27,7 @@ const handler = async (req: Request): Promise<Response> => {
     
     console.log(`Sending confirmation email to: ${email} for reservation: ${reservationNumber}`);
 
+    // Send confirmation email to customer
     const emailResponse = await resend.emails.send({
       from: "Salón TAMA <system@kadernictvotama.sk>",
       to: [email],
@@ -69,6 +70,58 @@ const handler = async (req: Request): Promise<Response> => {
     });
 
     console.log("Confirmation email sent successfully:", emailResponse);
+
+    // Send notification emails to admins
+    const adminEmails = ['tamara.gaborova28@gmail.com', 'timotejkucharcik116@gmail.com'];
+    
+    for (const adminEmail of adminEmails) {
+      try {
+        await resend.emails.send({
+          from: "Salón TAMA <system@kadernictvotama.sk>",
+          to: [adminEmail],
+          subject: `Nová rezervácia - ${reservationNumber}`,
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f9f9f9;">
+              <div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+                <h1 style="color: #4CAF50; text-align: center; margin-bottom: 30px;">Nová rezervácia!</h1>
+                
+                <p style="font-size: 16px; line-height: 1.6; color: #333;">
+                  Zákazník <strong>${fullName}</strong> si vytvoril novú rezerváciu.
+                </p>
+                
+                <div style="background-color: #f0f8ff; padding: 20px; border-radius: 8px; margin: 25px 0; border-left: 4px solid #4CAF50;">
+                  <h3 style="color: #333; margin-top: 0;">Detaily rezervácie:</h3>
+                  <p style="margin: 8px 0; color: #333;"><strong>Rezervačné číslo:</strong> ${reservationNumber}</p>
+                  <p style="margin: 8px 0; color: #333;"><strong>Meno:</strong> ${fullName}</p>
+                  <p style="margin: 8px 0; color: #333;"><strong>Email:</strong> ${email}</p>
+                  <p style="margin: 8px 0; color: #333;"><strong>Služba:</strong> ${service}</p>
+                  <p style="margin: 8px 0; color: #333;"><strong>Dátum:</strong> ${date}</p>
+                  <p style="margin: 8px 0; color: #333;"><strong>Čas:</strong> ${time}</p>
+                  <p style="margin: 8px 0; color: #666;"><strong>Stav:</strong> Čaká na potvrdenie</p>
+                </div>
+                
+                <div style="text-align: center; margin: 30px 0;">
+                  <a href="${process.env.SITE_URL || 'http://localhost:5173'}/admin" 
+                     style="background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin-right: 10px;">
+                    Prijať
+                  </a>
+                  <a href="${process.env.SITE_URL || 'http://localhost:5173'}/admin" 
+                     style="background-color: #f44336; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
+                    Odmietnuť
+                  </a>
+                </div>
+                
+                <p style="font-size: 16px; line-height: 1.6; color: #333; margin-top: 30px;">
+                  Kliknite na tlačítka vyššie alebo choďte do admin panelu na spracovanie rezervácie.
+                </p>
+              </div>
+            </div>
+          `,
+        });
+      } catch (adminEmailError) {
+        console.error(`Error sending admin notification to ${adminEmail}:`, adminEmailError);
+      }
+    }
 
     return new Response(JSON.stringify({ success: true, data: emailResponse }), {
       status: 200,

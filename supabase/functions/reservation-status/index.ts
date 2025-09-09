@@ -78,8 +78,8 @@ const handler = async (req: Request): Promise<Response> => {
             
             <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; font-size: 14px; color: #666;">
               <p>Pre akékoľvek otázky nás kontaktujte:</p>
-              <p>📞 Telefón: +421 XXX XXX XXX</p>
-              <p>📧 Email: info@salontama.sk</p>
+              <p>📞 Telefón: 0908 989 423</p>
+              <p>📧 Email: tamara.gaborova@kadernictvotama.sk</p>
             </div>
           </div>
         </div>
