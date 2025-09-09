@@ -115,7 +115,7 @@ const Gallery = () => {
                 <img
                   src="/lovable-uploads/f5a1afcf-fb43-4534-ac61-086cdd0dcdbc.png"
                   alt="Účes - pred"
-                  className="w-full h-full object-cover object-[center_20%]"
+                  className="w-full h-full object-cover object-[center_35%]"
                 />
               </div>
               
@@ -127,7 +127,7 @@ const Gallery = () => {
                 <img
                   src="/lovable-uploads/297bf00f-5603-4a36-9c77-4af9929b880b.png"
                   alt="Účes - po"
-                  className="w-full h-full object-cover object-[center_20%]"
+                  className="w-full h-full object-cover object-[center_35%]"
                 />
               </div>
               
