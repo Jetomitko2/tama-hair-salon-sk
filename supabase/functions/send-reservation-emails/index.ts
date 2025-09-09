@@ -5,88 +5,65 @@ const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
 interface ReservationEmailRequest {
   reservationNumber: string;
   fullName: string;
   email: string;
+  phone: string;
   service: string;
   date: string;
   time: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    const { reservationNumber, fullName, email, service, date, time }: ReservationEmailRequest = await req.json();
-
-    console.log("Sending reservation emails for:", reservationNumber);
+    const { reservationNumber, fullName, email, phone, service, date, time }: ReservationEmailRequest = await req.json();
+    
+    console.log(`Sending reservation emails for ${reservationNumber} to ${email}`);
 
     // Send confirmation email to customer
-    const customerEmailResponse = await resend.emails.send({
+    const customerEmail = await resend.emails.send({
       from: "Salón TAMA <onboarding@resend.dev>",
       to: [email],
-      subject: "Potvrdenie rezervácie - Salón TAMA",
+      subject: `Potvrdenie rezervácie - ${reservationNumber}`,
       html: `
-        <h1>Ďakujeme za vašu rezerváciu, ${fullName}!</h1>
-        <p><strong>Rezervačné číslo:</strong> ${reservationNumber}</p>
-        <p><strong>Služba:</strong> ${service}</p>
-        <p><strong>Dátum:</strong> ${date}</p>
-        <p><strong>Čas:</strong> ${time}</p>
-        <br>
-        <p>Rezerváciu musíme ešte potvrdiť. Napíšeme vám na e-mail s potvrdením.</p>
-        <p>S pozdravom,<br>Tím Salón TAMA</p>
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #4CAF50;">Rezervácia prijatá</h1>
+          <p>Milý/á ${fullName},</p>
+          <p>Ďakujeme za Vašu rezerváciu! Vaša žiadosť bola prijatá a čaká na potvrdenie.</p>
+          
+          <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
+            <h3>Detaily rezervácie:</h3>
+            <p><strong>Rezervačné číslo:</strong> ${reservationNumber}</p>
+            <p><strong>Služba:</strong> ${service}</p>
+            <p><strong>Dátum:</strong> ${date}</p>
+            <p><strong>Čas:</strong> ${time}</p>
+          </div>
+          
+          <p>Ozveме sa Vám čoskoro s potvrdením termínu.</p>
+          <p>S pozdravom,<br><strong>Tím Salón TAMA</strong></p>
+        </div>
       `,
     });
 
-    // Send notification email to salon owners
-    const adminEmailResponse = await resend.emails.send({
-      from: "Salón TAMA <onboarding@resend.dev>",
-      to: ["tamara.gaborova28@gmail.com", "timotejkucharcik116@gmail.com"],
-      subject: `Nová rezervácia - ${reservationNumber}`,
-      html: `
-        <h1>Nová rezervácia!</h1>
-        <p><strong>Rezervačné číslo:</strong> ${reservationNumber}</p>
-        <p><strong>Klient:</strong> ${fullName}</p>
-        <p><strong>E-mail:</strong> ${email}</p>
-        <p><strong>Služba:</strong> ${service}</p>
-        <p><strong>Dátum:</strong> ${date}</p>
-        <p><strong>Čas:</strong> ${time}</p>
-        <br>
-        <p>Prosím, potvrďte alebo odmietne túto rezerváciu v administrácii.</p>
-        <p><a href="https://hywvxiezdxhvfwqzlcdj.lovable.app/admin" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 10px 0;">Spravovať rezervácie</a></p>
-      `,
-    });
+    console.log("Customer email sent:", customerEmail);
 
-    console.log("Customer email sent:", customerEmailResponse);
-    console.log("Admin email sent:", adminEmailResponse);
-
-    return new Response(JSON.stringify({ 
-      success: true, 
-      customerEmail: customerEmailResponse,
-      adminEmail: adminEmailResponse 
-    }), {
+    return new Response(JSON.stringify({ success: true }), {
       status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        ...corsHeaders,
-      },
+      headers: { "Content-Type": "application/json", ...corsHeaders },
     });
   } catch (error: any) {
-    console.error("Error in send-reservation-emails function:", error);
+    console.error("Error sending reservation emails:", error);
     return new Response(
       JSON.stringify({ error: error.message }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
-      }
+      { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
   }
 };

@@ -52,45 +52,29 @@ const Admin = () => {
   };
 
   const updateReservationStatus = async (id: string, status: 'confirmed' | 'rejected') => {
-    if (processingId) return; // Prevent multiple simultaneous requests
+    if (processingId) return;
     
     try {
-      console.log("=== ADMIN: Starting reservation update ===");
-      console.log("Reservation ID:", id, "New status:", status);
-      
       setProcessingId(id);
       
-      // Get reservation details before updating
       const reservation = reservations.find(res => res.id === id);
       if (!reservation) throw new Error('Rezervácia nenájdená');
 
-      console.log("Found reservation:", reservation);
-
-      // Update status in database first
-      console.log("Updating database...");
       const { error } = await supabase
         .from('reservations')
         .update({ status })
         .eq('id', id);
 
-      if (error) {
-        console.error("Database update error:", error);
-        throw error;
-      }
-      
-      console.log("Database updated successfully");
+      if (error) throw error;
 
-      // Update UI immediately
       setReservations(prev => 
         prev.map(res => 
           res.id === id ? { ...res, status } : res
         )
       );
 
-      console.log("UI updated, now sending email...");
-
-      // Send email in background (don't wait for it to complete)
-      supabase.functions.invoke('send-status-email', {
+      // Send status email
+      const { error: emailError } = await supabase.functions.invoke('send-status-email', {
         body: {
           reservationNumber: reservation.reservation_number,
           fullName: reservation.full_name,
@@ -100,21 +84,11 @@ const Admin = () => {
           time: reservation.reservation_time,
           status
         }
-      }).then(emailResponse => {
-        console.log("Email function response:", emailResponse);
-        if (emailResponse.error) {
-          console.error('Error sending status email:', emailResponse.error);
-          toast({
-            title: "Upozornenie",
-            description: `Rezervácia bola ${status === 'confirmed' ? 'potvrdená' : 'odmietnutá'}, ale email sa nepodarilo poslať`,
-            variant: "destructive",
-          });
-        } else {
-          console.log("Email sent successfully!");
-        }
-      }).catch(emailError => {
-        console.error("Email function error:", emailError);
       });
+
+      if (emailError) {
+        console.error('Email error:', emailError);
+      }
 
       toast({
         title: "Úspech",
@@ -128,7 +102,6 @@ const Admin = () => {
         variant: "destructive",
       });
     } finally {
-      console.log("=== ADMIN: Finished reservation update ===");
       setProcessingId(null);
     }
   };

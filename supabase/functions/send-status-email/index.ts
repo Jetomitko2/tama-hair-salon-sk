@@ -5,8 +5,7 @@ const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers":
-    "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
 interface StatusEmailRequest {
@@ -20,29 +19,19 @@ interface StatusEmailRequest {
 }
 
 const handler = async (req: Request): Promise<Response> => {
-  // Handle CORS preflight requests
   if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    console.log("=== SEND STATUS EMAIL FUNCTION STARTED ===");
+    const { reservationNumber, fullName, email, service, date, time, status }: StatusEmailRequest = await req.json();
     
-    const requestBody = await req.text();
-    console.log("Request body received:", requestBody);
-    
-    const { reservationNumber, fullName, email, service, date, time, status }: StatusEmailRequest = JSON.parse(requestBody);
-    
-    console.log("Parsed request data:", { reservationNumber, fullName, email, status });
-
-    console.log("Sending status email for reservation:", reservationNumber, "Status:", status);
+    console.log(`Sending status email to ${email} for reservation ${reservationNumber} - status: ${status}`);
 
     const isConfirmed = status === 'confirmed';
     const statusText = isConfirmed ? 'potvrdená' : 'odmietnutá';
     const statusColor = isConfirmed ? '#4CAF50' : '#f44336';
 
-    console.log("About to send email via Resend...");
-    
     const emailResponse = await resend.emails.send({
       from: "Salón TAMA <onboarding@resend.dev>",
       to: [email],
@@ -55,7 +44,7 @@ const handler = async (req: Request): Promise<Response> => {
           ${isConfirmed ? `
             <p>Vaša rezervácia bola <strong style="color: ${statusColor};">potvrdená</strong>! Tešíme sa na Vás.</p>
           ` : `
-            <p>Ľutujeme, ale Vašu rezerváciu sme museli <strong style="color: ${statusColor};">odmietnuť</strong>. Pre viac informácií nás kontaktujte.</p>
+            <p>Ľutujeme, ale Vašu rezerváciu sme museli <strong style="color: ${statusColor};">odmietnuť</strong>.</p>
           `}
           
           <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
@@ -66,12 +55,6 @@ const handler = async (req: Request): Promise<Response> => {
             <p><strong>Čas:</strong> ${time}</p>
           </div>
           
-          ${isConfirmed ? `
-            <p>Ak potrebujete zmeniť alebo zrušiť rezerváciu, kontaktujte nás telefonicky alebo emailom.</p>
-          ` : `
-            <p>Môžete si vybrať iný termín na našej webstránke alebo nás kontaktovať priamo.</p>
-          `}
-          
           <p style="margin-top: 30px;">
             S pozdravom,<br>
             <strong>Tím Salón TAMA</strong>
@@ -80,27 +63,17 @@ const handler = async (req: Request): Promise<Response> => {
       `,
     });
 
-    console.log("Email response from Resend:", JSON.stringify(emailResponse, null, 2));
+    console.log("Email sent successfully:", emailResponse);
 
-    return new Response(JSON.stringify({ 
-      success: true, 
-      emailResponse: emailResponse 
-    }), {
+    return new Response(JSON.stringify({ success: true }), {
       status: 200,
-      headers: {
-        "Content-Type": "application/json",
-        ...corsHeaders,
-      },
+      headers: { "Content-Type": "application/json", ...corsHeaders },
     });
   } catch (error: any) {
-    console.error("ERROR in send-status-email function:", error);
-    console.error("Error stack:", error.stack);
+    console.error("Error sending status email:", error);
     return new Response(
-      JSON.stringify({ error: error.message, stack: error.stack }),
-      {
-        status: 500,
-        headers: { "Content-Type": "application/json", ...corsHeaders },
-      }
+      JSON.stringify({ error: error.message }),
+      { status: 500, headers: { "Content-Type": "application/json", ...corsHeaders } }
     );
   }
 };
