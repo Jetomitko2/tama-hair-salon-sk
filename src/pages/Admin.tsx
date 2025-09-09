@@ -64,7 +64,10 @@ const Admin = () => {
   const updateReservationStatus = async (id: string, status: 'accepted' | 'rejected') => {
     if (processingId) return;
     
-    console.log('Updating reservation status:', { id, status });
+    console.log('=== UPDATING RESERVATION STATUS ===');
+    console.log('ID:', id);
+    console.log('Status:', status);
+    console.log('ProcessingId:', processingId);
     
     try {
       setProcessingId(id);
@@ -76,17 +79,29 @@ const Admin = () => {
       }
 
       console.log('Found reservation:', reservation);
+      console.log('About to update with status:', status);
 
-      // Update status in database
+      // Update status in database with explicit values
+      const updateData = { status: status };
+      console.log('Update data:', updateData);
+
       const { data, error } = await supabase
         .from('reservations')
-        .update({ status })
+        .update(updateData)
         .eq('id', id)
         .select()
         .single();
 
+      console.log('Database response - data:', data);
+      console.log('Database response - error:', error);
+
       if (error) {
-        console.error('Database update error:', error);
+        console.error('Database update error details:', {
+          message: error.message,
+          details: error.details,
+          hint: error.hint,
+          code: error.code
+        });
         throw error;
       }
 
@@ -102,6 +117,9 @@ const Admin = () => {
       // Send status email
       console.log('Sending status email...');
       try {
+        const emailStatus = status === 'accepted' ? 'confirmed' : 'rejected';
+        console.log('Email status:', emailStatus);
+        
         const { data: emailData, error: emailError } = await supabase.functions.invoke('reservation-status', {
           body: {
             reservationNumber: reservation.reservation_number,
@@ -110,19 +128,17 @@ const Admin = () => {
             service: reservation.service,
             date: new Date(reservation.reservation_date).toLocaleDateString('sk-SK'),
             time: reservation.reservation_time,
-            status: status === 'accepted' ? 'confirmed' : 'rejected' // Convert for email
+            status: emailStatus
           }
         });
 
         if (emailError) {
           console.error('Email error:', emailError);
-          // Don't throw error for email issues, just log them
         } else {
           console.log('Email sent successfully:', emailData);
         }
       } catch (emailError) {
         console.error('Email sending failed:', emailError);
-        // Don't fail the whole operation if email fails
       }
 
       toast({
@@ -130,19 +146,22 @@ const Admin = () => {
         description: `Rezervácia bola ${status === 'accepted' ? 'potvrdená' : 'odmietnutá'}`,
       });
       
-      // Refresh the reservations list
-      setTimeout(() => {
-        fetchReservations();
-      }, 1000);
+      console.log('=== STATUS UPDATE COMPLETED SUCCESSFULLY ===');
       
     } catch (error: any) {
-      console.error('Error updating reservation:', error);
+      console.error('=== ERROR UPDATING RESERVATION ===');
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
       toast({
         title: "Chyba",
         description: `Nepodarilo sa aktualizovať rezerváciu: ${error.message || 'Neznáma chyba'}`,
         variant: "destructive",
       });
     } finally {
+      console.log('=== FINALLY BLOCK - RESETTING PROCESSING ID ===');
       setProcessingId(null);
     }
   };
