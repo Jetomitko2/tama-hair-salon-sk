@@ -73,10 +73,12 @@ const handler = async (req: Request): Promise<Response> => {
 
     // Send notification emails to admins
     const adminEmails = ['tamara.gaborova28@gmail.com', 'timotejkucharcik116@gmail.com'];
+    console.log('Sending admin notifications to:', adminEmails);
     
     for (const adminEmail of adminEmails) {
       try {
-        await resend.emails.send({
+        console.log(`Sending admin notification to: ${adminEmail}`);
+        const adminEmailResponse = await resend.emails.send({
           from: "Salón TAMA <system@kadernictvotama.sk>",
           to: [adminEmail],
           subject: `Nová rezervácia - ${reservationNumber}`,
@@ -94,6 +96,7 @@ const handler = async (req: Request): Promise<Response> => {
                   <p style="margin: 8px 0; color: #333;"><strong>Rezervačné číslo:</strong> ${reservationNumber}</p>
                   <p style="margin: 8px 0; color: #333;"><strong>Meno:</strong> ${fullName}</p>
                   <p style="margin: 8px 0; color: #333;"><strong>Email:</strong> ${email}</p>
+                  <p style="margin: 8px 0; color: #333;"><strong>Telefón:</strong> Bude dodané</p>
                   <p style="margin: 8px 0; color: #333;"><strong>Služba:</strong> ${service}</p>
                   <p style="margin: 8px 0; color: #333;"><strong>Dátum:</strong> ${date}</p>
                   <p style="margin: 8px 0; color: #333;"><strong>Čas:</strong> ${time}</p>
@@ -114,14 +117,23 @@ const handler = async (req: Request): Promise<Response> => {
                 <p style="font-size: 16px; line-height: 1.6; color: #333; margin-top: 30px;">
                   Kliknite na tlačítka vyššie alebo choďte do admin panelu na spracovanie rezervácie.
                 </p>
+                
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; font-size: 14px; color: #666;">
+                  <p>Pre akékoľvek otázky kontaktujte:</p>
+                  <p>📞 Telefón: 0908 989 423</p>
+                  <p>📧 Email: tamara.gaborova@kadernictvotama.sk</p>
+                </div>
               </div>
             </div>
           `,
         });
+        console.log(`Admin notification sent successfully to ${adminEmail}:`, adminEmailResponse);
       } catch (adminEmailError) {
         console.error(`Error sending admin notification to ${adminEmail}:`, adminEmailError);
       }
     }
+
+    console.log('All admin notifications processed.');
 
     return new Response(JSON.stringify({ success: true, data: emailResponse }), {
       status: 200,
