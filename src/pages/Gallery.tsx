@@ -36,7 +36,9 @@ const Gallery = () => {
               "/lovable-uploads/ba4dce19-c1b4-4ca2-8596-6a8842f5994f.png",
               "/lovable-uploads/8967f0f9-4781-43bd-98e1-d65cc24438d8.png",
               "/lovable-uploads/8fe0296c-96a4-48d5-bb56-ea76e28f3385.png",
-              "/lovable-uploads/1c1839f2-318f-4179-9925-8ac27518b485.png"
+              "/lovable-uploads/1c1839f2-318f-4179-9925-8ac27518b485.png",
+              "/lovable-uploads/8f7b0c8e-a598-4d7a-bf16-4365aef7c0f3.png",
+              "/lovable-uploads/a7f820ad-9b34-43c3-a303-9f389c6f57e4.png"
             ].map((image, index) => (
               <div 
                 key={index}

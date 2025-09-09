@@ -143,15 +143,15 @@
 @layer base {
   @keyframes camera-shake {
     0%, 100% { transform: translateX(0) translateY(0) rotate(0deg); }
-    10% { transform: translateX(-0.5px) translateY(-0.5px) rotate(-0.2deg); }
-    20% { transform: translateX(0.5px) translateY(0.5px) rotate(0.2deg); }
-    30% { transform: translateX(-0.5px) translateY(0.5px) rotate(-0.1deg); }
-    40% { transform: translateX(0.5px) translateY(-0.5px) rotate(0.1deg); }
+    10% { transform: translateX(-0.2px) translateY(-0.2px) rotate(-0.05deg); }
+    20% { transform: translateX(0.2px) translateY(0.2px) rotate(0.05deg); }
+    30% { transform: translateX(-0.2px) translateY(0.2px) rotate(-0.03deg); }
+    40% { transform: translateX(0.2px) translateY(-0.2px) rotate(0.03deg); }
     50% { transform: translateX(0) translateY(0) rotate(0deg); }
-    60% { transform: translateX(-0.3px) translateY(-0.3px) rotate(-0.1deg); }
-    70% { transform: translateX(0.3px) translateY(0.3px) rotate(0.1deg); }
-    80% { transform: translateX(-0.3px) translateY(0.3px) rotate(-0.05deg); }
-    90% { transform: translateX(0.3px) translateY(-0.3px) rotate(0.05deg); }
+    60% { transform: translateX(-0.1px) translateY(-0.1px) rotate(-0.02deg); }
+    70% { transform: translateX(0.1px) translateY(0.1px) rotate(0.02deg); }
+    80% { transform: translateX(-0.1px) translateY(0.1px) rotate(-0.01deg); }
+    90% { transform: translateX(0.1px) translateY(-0.1px) rotate(0.01deg); }
   }
   
   @keyframes fade-up {
