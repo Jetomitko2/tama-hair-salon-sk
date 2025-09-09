@@ -81,9 +81,9 @@ const ProductsSection = () => {
               </div>
               
               <p className="text-muted-foreground leading-relaxed text-sm sm:text-base px-2">
-                Malibu C predstavuje prémiové riešenie pre kompletnú starostlivosť o vlasy. 
-                Tieto produkty poskytujú hlbokú regeneráciu a výživu, ideálne pre poškodené 
-                a chemicky ošetrené vlasy s dlhotrvajúcimi výsledkami.
+                Malibu C predstavuje špecializované riešenie pre hĺbkové čistenie od nánosov a minerálov. 
+                Tieto produkty efektívne odstraňujú usadeniny z vlasov a poskytujú intenzívnu regeneráciu 
+                pre zdravý a žiarivý vzhľad vlasov.
               </p>
             </CardContent>
           </Card>
