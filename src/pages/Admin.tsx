@@ -52,12 +52,34 @@ const Admin = () => {
 
   const updateReservationStatus = async (id: string, status: 'confirmed' | 'rejected') => {
     try {
+      // Get reservation details before updating
+      const reservation = reservations.find(res => res.id === id);
+      if (!reservation) throw new Error('Rezervácia nenájdená');
+
+      // Update status in database
       const { error } = await supabase
         .from('reservations')
         .update({ status })
         .eq('id', id);
 
       if (error) throw error;
+
+      // Send status email to customer
+      const emailResponse = await supabase.functions.invoke('send-status-email', {
+        body: {
+          reservationNumber: reservation.reservation_number,
+          fullName: reservation.full_name,
+          email: reservation.email,
+          service: reservation.service,
+          date: new Date(reservation.reservation_date).toLocaleDateString('sk-SK'),
+          time: reservation.reservation_time,
+          status
+        }
+      });
+
+      if (emailResponse.error) {
+        console.error('Error sending status email:', emailResponse.error);
+      }
 
       setReservations(prev => 
         prev.map(res => 
@@ -67,7 +89,7 @@ const Admin = () => {
 
       toast({
         title: "Úspech",
-        description: `Rezervácia bola ${status === 'confirmed' ? 'potvrdená' : 'odmietnutá'}`,
+        description: `Rezervácia bola ${status === 'confirmed' ? 'potvrdená' : 'odmietnutá'} a email bol odoslaný klientovi`,
       });
     } catch (error) {
       console.error('Error updating reservation:', error);
