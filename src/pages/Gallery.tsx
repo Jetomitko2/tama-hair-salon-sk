@@ -32,9 +32,7 @@ const Gallery = () => {
         <div className="container mx-auto px-4 py-12">
           <div className="text-center mb-16 animate-fade-up">
             <h1 className="text-4xl md:text-5xl font-bold text-primary mb-6">Galéria</h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Pozrite si našu prácu a inšpirujte sa pre váš nový vzhľad
-            </p>
+            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Pozrite si moju prácu a inšpirujte sa pre váš nový vzhľad</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
