@@ -34,7 +34,7 @@ const handler = async (req: Request): Promise<Response> => {
     const backgroundColor = isConfirmed ? '#f0f8ff' : '#fff0f0';
 
     const emailResponse = await resend.emails.send({
-      from: "Salón TAMA <info@tvojadomene.sk>",  // Zmeň na tvoju doménu
+      from: "Salón TAMA <system@kadernictvotama.sk>",
       to: [email],
       subject: `Rezervácia ${statusText} - ${reservationNumber}`,
       html: `
