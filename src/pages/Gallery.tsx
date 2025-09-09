@@ -26,7 +26,17 @@ const Gallery = () => {
               "/lovable-uploads/1edd7fe6-3abf-44e5-a6b0-612d3d2a913b.png",
               "/lovable-uploads/bc3537ba-c4bf-4a27-9513-00850307aa17.png",
               "/lovable-uploads/a68aba30-72b8-4599-b63d-0c13670d1e41.png",
-              "/lovable-uploads/098232cd-29c5-4057-aae9-205b1b4533d8.png"
+              "/lovable-uploads/098232cd-29c5-4057-aae9-205b1b4533d8.png",
+              "/lovable-uploads/9c385286-52f1-40d9-98d5-e6b672530de0.png",
+              "/lovable-uploads/72906b94-c65c-4204-9896-136b7ba46020.png",
+              "/lovable-uploads/8ac92f97-9f8a-4376-a221-3751222cdca2.png",
+              "/lovable-uploads/62f757f5-2323-46bf-914e-eeac1db30dc6.png",
+              "/lovable-uploads/836dde04-d5da-4691-8bf5-66c08f887191.png",
+              "/lovable-uploads/ce1aa67f-c837-499b-b340-9cab1ed9a952.png",
+              "/lovable-uploads/ba4dce19-c1b4-4ca2-8596-6a8842f5994f.png",
+              "/lovable-uploads/8967f0f9-4781-43bd-98e1-d65cc24438d8.png",
+              "/lovable-uploads/8fe0296c-96a4-48d5-bb56-ea76e28f3385.png",
+              "/lovable-uploads/1c1839f2-318f-4179-9925-8ac27518b485.png"
             ].map((image, index) => (
               <div 
                 key={index}
