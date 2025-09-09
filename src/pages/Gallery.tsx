@@ -107,7 +107,7 @@ const Gallery = () => {
           <div className="mb-16 animate-fade-up">
             <div 
               ref={sliderRef}
-              className="relative w-full h-[250px] md:h-[300px] overflow-hidden rounded-lg cursor-ew-resize select-none"
+              className="relative w-full h-[200px] md:h-[250px] overflow-hidden rounded-lg cursor-ew-resize select-none"
               onClick={handleSliderDrag}
             >
               {/* First Image (Right side - visible when slider is to the right) */}
