@@ -28,7 +28,7 @@ const ProductsSection = () => {
         <div className="flex justify-center">
           <Card className="max-w-2xl salon-shadow-elegant hover:salon-shadow-card transition-spring hover:-translate-y-2 animate-fade-up bg-background/95 backdrop-blur-sm">
             <CardContent className="p-8 text-center">
-              <div className="w-32 h-32 mx-auto mb-6 overflow-hidden rounded-full">
+              <div className="w-32 h-32 mx-auto mb-6 overflow-hidden rounded-xl">
                 <img 
                   src="/lovable-uploads/723b5118-c7fb-45b8-8d4a-413279b3428d.png" 
                   alt="FarmaVita produkty" 
