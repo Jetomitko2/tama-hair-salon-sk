@@ -28,6 +28,8 @@
 
     --card: 0 0% 100%;
     --card-foreground: hsl(var(--foreground));
+    --popover: 0 0% 100%;
+    --popover-foreground: hsl(var(--foreground));
     --primary: var(--salon-primary);
     --primary-foreground: 0 0% 98%;
     --secondary: var(--salon-secondary);
