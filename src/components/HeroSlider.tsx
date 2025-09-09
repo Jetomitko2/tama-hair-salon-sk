@@ -10,10 +10,15 @@ const HeroSlider = () => {
   }, [images.length]);
   return <div className="relative h-screen overflow-hidden">
       {/* Background Images */}
-      {images.map((image, index) => <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImage ? "opacity-100" : "opacity-0"}`}>
-          <img src={image} alt={`Účes ${index + 1}`} className="w-full h-full object-cover animate-camera-shake" />
-          <div className="absolute inset-0 salon-gradient-hero" />
-        </div>)}
+      {images.map((image, index) => {
+        const shakeAnimations = ["animate-camera-shake", "animate-camera-shake-2", "animate-camera-shake-3", "animate-camera-shake-4", "animate-camera-shake"];
+        return (
+          <div key={index} className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImage ? "opacity-100" : "opacity-0"}`}>
+            <img src={image} alt={`Účes ${index + 1}`} className={`w-full h-full object-cover ${shakeAnimations[index % shakeAnimations.length]}`} />
+            <div className="absolute inset-0 salon-gradient-hero" />
+          </div>
+        );
+      })}
 
       {/* Content Overlay */}
       <div className="absolute inset-0 flex items-center justify-center text-center">
