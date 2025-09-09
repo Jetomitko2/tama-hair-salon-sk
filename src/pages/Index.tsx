@@ -1,13 +1,47 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import Navigation from "@/components/Navigation";
+import HeroSlider from "@/components/HeroSlider";
+import StaffSection from "@/components/StaffSection";
+import GallerySection from "@/components/GallerySection";
+import ServicesSection from "@/components/ServicesSection";
+import ProductsSection from "@/components/ProductsSection";
+import ContactSection from "@/components/ContactSection";
+import { useEffect } from "react";
 
 const Index = () => {
+  useEffect(() => {
+    // Animate elements on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('animate-fade-up');
+        }
+      });
+    }, observerOptions);
+
+    // Observe all sections
+    const sections = document.querySelectorAll('section');
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <>
+      <Navigation />
+      <main>
+        <HeroSlider />
+        <StaffSection />
+        <GallerySection />
+        <ServicesSection />
+        <ProductsSection />
+        <ContactSection />
+      </main>
+    </>
   );
 };
 

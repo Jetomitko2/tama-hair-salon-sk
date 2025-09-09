@@ -47,6 +47,14 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        salon: {
+          primary: "hsl(var(--salon-primary))",
+          "primary-light": "hsl(var(--salon-primary-light))",
+          secondary: "hsl(var(--salon-secondary))",
+          accent: "hsl(var(--salon-accent))",
+          muted: "hsl(var(--salon-muted))",
+          "text-light": "hsl(var(--salon-text-light))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -80,10 +88,37 @@ export default {
             height: "0",
           },
         },
+        "camera-shake": {
+          "0%, 100%": { transform: "translateX(0) translateY(0) rotate(0deg)" },
+          "10%": { transform: "translateX(-1px) translateY(-1px) rotate(-0.5deg)" },
+          "20%": { transform: "translateX(1px) translateY(1px) rotate(0.5deg)" },
+          "30%": { transform: "translateX(-1px) translateY(1px) rotate(-0.3deg)" },
+          "40%": { transform: "translateX(1px) translateY(-1px) rotate(0.3deg)" },
+          "50%": { transform: "translateX(0) translateY(0) rotate(0deg)" },
+          "60%": { transform: "translateX(-1px) translateY(-1px) rotate(-0.2deg)" },
+          "70%": { transform: "translateX(1px) translateY(1px) rotate(0.2deg)" },
+          "80%": { transform: "translateX(-1px) translateY(1px) rotate(-0.1deg)" },
+          "90%": { transform: "translateX(1px) translateY(-1px) rotate(0.1deg)" },
+        },
+        "fade-up": {
+          to: {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+        "slide-left": {
+          to: {
+            opacity: "1",
+            transform: "translateX(0)",
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "camera-shake": "camera-shake 6s ease-in-out infinite",
+        "fade-up": "fade-up 0.6s ease-out forwards",
+        "slide-left": "slide-left 0.8s ease-out forwards",
       },
     },
   },
