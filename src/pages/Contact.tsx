@@ -1,10 +1,8 @@
 import Navigation from "@/components/Navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Clock, Phone, MapPin, Calendar } from "lucide-react";
-
 const Contact = () => {
-  return (
-    <>
+  return <>
       <Navigation />
       <div className="pt-16 min-h-screen bg-muted/50">
         <div className="container mx-auto px-4 py-20">
@@ -63,15 +61,10 @@ const Contact = () => {
                 <CardTitle className="text-primary">Telefónny kontakt</CardTitle>
               </CardHeader>
               <CardContent className="text-center">
-                <a 
-                  href="tel:+421908989423" 
-                  className="text-2xl font-bold text-accent hover:text-salon-primary-light transition-smooth"
-                >
+                <a href="tel:+421908989423" className="text-2xl font-bold text-accent hover:text-salon-primary-light transition-smooth">
                   0908 989 423
                 </a>
-                <p className="text-muted-foreground mt-4">
-                  Zavolajte nám pre objednanie termínu alebo informácie o našich službách
-                </p>
+                <p className="text-muted-foreground mt-4">Zavolajte mi pre objednanie termínu alebo informácie o našich službách</p>
               </CardContent>
             </Card>
 
@@ -87,9 +80,7 @@ const Contact = () => {
                   <strong>075 01 Trebišov</strong><br />
                   <strong>Slovensko</strong>
                 </address>
-                <p className="text-muted-foreground mt-4">
-                  Nachádzame sa v centre Trebišova, ľahko dostupní pešo aj autom
-                </p>
+                <p className="text-muted-foreground mt-4">Nachádzam sa v centre Trebišova, ľahko dostupní pešo aj autom</p>
               </CardContent>
             </Card>
           </div>
@@ -111,8 +102,6 @@ const Contact = () => {
           </div>
         </div>
       </div>
-    </>
-  );
+    </>;
 };
-
 export default Contact;
