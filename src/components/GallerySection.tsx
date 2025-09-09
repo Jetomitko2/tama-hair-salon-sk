@@ -10,7 +10,7 @@ const GallerySection = () => {
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-3 sm:mb-4">
             Fotogaléria
           </h2>
-          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto px-2">Pozrite si noju prácu a inšpirujte sa pre váš nový vzhľad</p>
+          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto px-2">Pozrite si moju prácu a inšpirujte sa pre váš nový vzhľad</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
