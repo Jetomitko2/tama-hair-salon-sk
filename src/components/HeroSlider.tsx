@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 
 const HeroSlider = () => {
   return (
-    <div className="relative h-screen overflow-hidden bg-black">
+    <div className="relative h-screen overflow-hidden">
+      {/* Semi-transparent black overlay */}
+      <div className="absolute inset-0 bg-black/70"></div>
+      
       {/* Content Overlay */}
       <div className="absolute inset-0 flex items-center justify-center text-center">
         <div className="max-w-4xl px-4 sm:px-6 text-white animate-fade-up">
