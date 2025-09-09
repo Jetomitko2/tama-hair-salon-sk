@@ -61,7 +61,7 @@ const handler = async (req: Request): Promise<Response> => {
         <p><strong>Čas:</strong> ${time}</p>
         <br>
         <p>Prosím, potvrďte alebo odmietne túto rezerváciu v administrácii.</p>
-        <p><a href="${Deno.env.get('SUPABASE_URL')}/auth/v1/verify?token=admin&type=magiclink&redirect_to=${Deno.env.get('SITE_URL')}/admin" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 10px 0;">Spravovať rezervácie</a></p>
+        <p><a href="https://hywvxiezdxhvfwqzlcdj.lovable.app/admin" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block; margin: 10px 0;">Spravovať rezervácie</a></p>
       `,
     });
 
