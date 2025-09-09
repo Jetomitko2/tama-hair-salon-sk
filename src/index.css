@@ -232,3 +232,38 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom Scrollbar Styles */
+@layer base {
+  /* Webkit Scrollbar for Chrome, Safari, Edge */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--salon-muted));
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: var(--gradient-primary);
+    border-radius: 10px;
+    border: 1px solid hsl(var(--salon-muted));
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--salon-accent));
+    box-shadow: var(--shadow-elegant);
+  }
+  
+  ::-webkit-scrollbar-corner {
+    background: hsl(var(--salon-muted));
+  }
+  
+  /* Firefox Scrollbar */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--salon-primary)) hsl(var(--salon-muted));
+  }
+}
