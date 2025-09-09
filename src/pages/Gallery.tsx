@@ -107,7 +107,7 @@ const Gallery = () => {
           <div className="mb-16 animate-fade-up">
             <div 
               ref={sliderRef}
-              className="relative w-full h-[400px] md:h-[500px] overflow-hidden rounded-lg cursor-ew-resize select-none"
+              className="relative w-full h-[300px] md:h-[350px] overflow-hidden rounded-lg cursor-ew-resize select-none"
               onClick={handleSliderDrag}
             >
               {/* First Image (Right side - visible when slider is to the right) */}
@@ -115,7 +115,7 @@ const Gallery = () => {
                 <img
                   src="/lovable-uploads/f5a1afcf-fb43-4534-ac61-086cdd0dcdbc.png"
                   alt="Účes - pred"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-[center_20%]"
                 />
               </div>
               
@@ -127,7 +127,7 @@ const Gallery = () => {
                 <img
                   src="/lovable-uploads/297bf00f-5603-4a36-9c77-4af9929b880b.png"
                   alt="Účes - po"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-[center_20%]"
                 />
               </div>
               
