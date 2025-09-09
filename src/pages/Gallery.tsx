@@ -113,9 +113,9 @@ const Gallery = () => {
               {/* First Image (Right side - visible when slider is to the right) */}
               <div className="absolute inset-0">
                 <img
-                  src="/lovable-uploads/f5a1afcf-fb43-4534-ac61-086cdd0dcdbc.png"
+                  src="/lovable-uploads/b229ab4e-c72d-4a97-8b46-bae51ec0a35c.png"
                   alt="Účes - pred"
-                  className="w-full h-full object-cover object-[center_15%]"
+                  className="w-full h-full object-cover"
                 />
               </div>
               
@@ -125,9 +125,9 @@ const Gallery = () => {
                 style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
               >
                 <img
-                  src="/lovable-uploads/0c2a7ab3-61e4-48b3-990f-04284622dc90.png"
+                  src="/lovable-uploads/312f95e0-04a5-441f-95e8-5bdbad0f82a9.png"
                   alt="Účes - po"
-                  className="w-full h-full object-cover object-[center_5%]"
+                  className="w-full h-full object-cover"
                 />
               </div>
               
