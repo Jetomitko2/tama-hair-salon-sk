@@ -123,25 +123,25 @@ const Rezervacia = () => {
     <>
       <Navigation />
       <main className="pt-16">
-        <section className="py-20 bg-gradient-to-b from-background to-muted/50 min-h-screen">
-          <div className="container mx-auto px-4 max-w-2xl">
-            <div className="text-center mb-12">
-              <h1 className="text-4xl md:text-5xl font-bold text-primary mb-4">
+        <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-background to-muted/50 min-h-screen">
+          <div className="container mx-auto px-4 sm:px-6 max-w-2xl">
+            <div className="text-center mb-8 sm:mb-12">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-3 sm:mb-4">
                 Rezervácia
               </h1>
-              <p className="text-muted-foreground text-lg">
+              <p className="text-muted-foreground text-base sm:text-lg px-2">
                 Rezervujte si termín u nás jednoducho online
               </p>
             </div>
 
             <Card className="salon-shadow-card">
               <CardHeader>
-                <CardTitle className="text-center text-primary">
+                <CardTitle className="text-center text-primary text-lg sm:text-xl">
                   Vyplňte rezervačný formulár
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
+              <CardContent className="p-4 sm:p-6">
+                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                   <div className="space-y-2">
                     <Label htmlFor="fullName">Celé meno *</Label>
                     <Input
@@ -242,7 +242,7 @@ const Rezervacia = () => {
 
                   <Button 
                     type="submit" 
-                    className="w-full" 
+                    className="w-full py-3 sm:py-2 text-base sm:text-sm" 
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Rezervujem..." : "Rezervovať"}

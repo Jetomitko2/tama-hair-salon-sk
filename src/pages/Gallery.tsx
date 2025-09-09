@@ -33,13 +33,13 @@ const Gallery = () => {
   return <>
       <Navigation />
       <div className="pt-20 min-h-screen bg-background">
-        <div className="container mx-auto px-4 py-12">
-          <div className="text-center mb-16 animate-fade-up">
-            <h1 className="text-4xl md:text-5xl font-bold text-primary mb-6">Galéria</h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">Pozrite si moju prácu a inšpirujte sa pre váš nový vzhľad</p>
+        <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12">
+          <div className="text-center mb-12 sm:mb-16 animate-fade-up">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-primary mb-4 sm:mb-6">Galéria</h1>
+            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto px-2">Pozrite si moju prácu a inšpirujte sa pre váš nový vzhľad</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
             {images.map((image, index) => <div key={index} className="overflow-hidden rounded-lg salon-shadow-card hover:salon-shadow-elegant transition-spring hover:-translate-y-2 animate-fade-up cursor-pointer" style={{
             animationDelay: `${index * 0.1}s`
           }} onClick={() => openLightbox(index)}>

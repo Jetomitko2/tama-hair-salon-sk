@@ -11,18 +11,18 @@ const GallerySection = () => {
   ];
 
   return (
-    <section className="py-20 bg-background">
-      <div className="container mx-auto px-4">
-        <div className="text-center mb-16 animate-fade-up">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
+    <section className="py-12 sm:py-16 md:py-20 bg-background">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="text-center mb-12 sm:mb-16 animate-fade-up">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-3 sm:mb-4">
             Fotogaléria
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto px-2">
             Pozrite si našu prácu a inšpirujte sa pre váš nový vzhľad
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
           {galleryImages.map((image, index) => (
             <Card 
               key={index} 
@@ -44,9 +44,9 @@ const GallerySection = () => {
 
         <div className="text-center animate-fade-up">
           <Link to="/galeria">
-            <Button size="lg" className="salon-gradient-primary text-white font-semibold px-8 py-3 transition-spring hover:scale-105">
+            <Button size="lg" className="salon-gradient-primary text-white font-semibold px-6 sm:px-8 py-2 sm:py-3 transition-spring hover:scale-105 w-full sm:w-auto">
               Pozrieť ďalej
-              <ArrowRight className="ml-2 h-5 w-5" />
+              <ArrowRight className="ml-2 h-4 w-4 sm:h-5 sm:w-5" />
             </Button>
           </Link>
         </div>
