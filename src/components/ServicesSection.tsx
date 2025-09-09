@@ -11,7 +11,8 @@ const ServicesSection = () => {
     { icon: Sparkles, title: "Spoločenské účesy", description: "Elegantné účesy pre rôzne spoločenské príležitosti" },
     { icon: Heart, title: "Svadobné účesy", description: "Nezabudnuteľné účesy pre najkrajší deň v živote" },
     { icon: ShieldCheck, title: "Čistenie vlasov Malibu C", description: "Špecializované ošetrenie pre zdravé a čisté vlasy" },
-    { icon: Waves, title: "Regeneračné zábaly", description: "Intenzívna starostlivosť a regenerácia poškodených vlasov" }
+    { icon: Waves, title: "Regeneračné zábaly", description: "Intenzívna starostlivosť a regenerácia poškodených vlasov" },
+    { icon: Waves, title: "Objemová Trvalá", description: "Profesionálna objemová trvalá pre krásny a prirodzený objem vlasov" }
   ];
 
   return (
