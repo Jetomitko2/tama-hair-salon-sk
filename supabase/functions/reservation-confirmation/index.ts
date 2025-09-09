@@ -106,11 +106,11 @@ const handler = async (req: Request): Promise<Response> => {
                 </div>
                 
                 <div style="text-align: center; margin: 30px 0;">
-                  <a href="${process.env.SITE_URL || 'http://localhost:5173'}/admin" 
+                  <a href="https://kadernictvotama.sk/admin" 
                      style="background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin-right: 10px;">
                     Prijať
                   </a>
-                  <a href="${process.env.SITE_URL || 'http://localhost:5173'}/admin" 
+                  <a href="https://kadernictvotama.sk/admin" 
                      style="background-color: #f44336; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
                     Odmietnuť
                   </a>
