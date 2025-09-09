@@ -10,14 +10,15 @@ const GallerySection = () => {
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-primary mb-3 sm:mb-4">
             Fotogaléria
           </h2>
-          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto px-2">Pozrite si moju prácu a inšpirujte sa pre váš nový vzhľad</p>
+          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto px-2">Pozrite si noju prácu a inšpirujte sa pre váš nový vzhľad</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 mb-8 sm:mb-12">
           {galleryImages.map((image, index) => <Card key={index} className="overflow-hidden salon-shadow-card hover:salon-shadow-elegant transition-spring hover:-translate-y-2 animate-fade-up" style={{
           animationDelay: `${index * 0.2}s`
         }}>
-              <CardContent className="p-0">mPozrite si noju prácu a inšpirujte sa pre váš nový vzhľad<div className="aspect-square overflow-hidden">
+              <CardContent className="p-0">
+                <div className="aspect-square overflow-hidden">
                   <img src={image} alt={`Účes ${index + 1}`} className="w-full h-full object-cover transition-smooth hover:scale-105 animate-camera-shake" />
                 </div>
               </CardContent>
