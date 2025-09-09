@@ -4,7 +4,7 @@ const SalonInteriorSection = () => {
   return <section className="py-12 sm:py-16 md:py-20 px-4 bg-salon-muted">
       <div className="max-w-6xl mx-auto text-center">
         <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6 sm:mb-8 text-salon-primary">Galéria Kaderníctva</h2>
-        <p className="text-base sm:text-lg md:text-xl text-salon-primary-light max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed px-2">Mám nádherný salón s čistým a príjemným prostredím. Moja kozmetika a profesionálne vybavenie zabezpečujú maximálny komfort počas vašej návštevy.</p>
+        <p className="text-base sm:text-lg md:text-xl text-salon-primary-light max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed px-2">Mám salón s čistým a príjemným prostredím. Moja kozmetika a profesionálne vybavenie zabezpečujú maximálny komfort počas vašej návštevy.</p>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
           {images.map((image, index) => <div key={index} className="group">
