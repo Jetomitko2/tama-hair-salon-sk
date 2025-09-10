@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Calendar, Clock, User, Phone, Mail, CheckCircle, XCircle, ArrowLeft } from "lucide-react";
+import { Calendar, Clock, User, Phone, Mail, CheckCircle, XCircle, ArrowLeft, Trash2 } from "lucide-react";
 import RejectReasonDialog from "@/components/RejectReasonDialog";
 
 interface Reservation {
@@ -29,6 +29,7 @@ const AdminDetail = () => {
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -117,6 +118,38 @@ const AdminDetail = () => {
     }
   };
 
+  const deleteReservation = async () => {
+    if (!reservation || deleting) return;
+    
+    try {
+      setDeleting(true);
+      
+      const { error } = await supabase
+        .from('reservations')
+        .delete()
+        .eq('id', reservation.id);
+
+      if (error) throw error;
+
+      toast({
+        title: "Úspech",
+        description: "Rezervácia bola vymazaná",
+      });
+
+      navigate('/admin');
+      
+    } catch (error: any) {
+      console.error('Error deleting reservation:', error);
+      toast({
+        title: "Chyba",
+        description: `Nepodarilo sa vymazať rezerváciu: ${error.message || 'Neznáma chyba'}`,
+        variant: "destructive",
+      });
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'accepted':
@@ -167,7 +200,18 @@ const AdminDetail = () => {
 
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold">Rezervácia {reservation.reservation_number}</h1>
-          {getStatusBadge(reservation.status)}
+          <div className="flex items-center space-x-4">
+            {getStatusBadge(reservation.status)}
+            <Button 
+              variant="destructive"
+              onClick={deleteReservation}
+              disabled={deleting}
+              className="flex items-center space-x-2"
+            >
+              <Trash2 className="h-4 w-4" />
+              <span>{deleting ? 'Vymazáva sa...' : 'Vymazať'}</span>
+            </Button>
+          </div>
         </div>
         
         <Card className="w-full">

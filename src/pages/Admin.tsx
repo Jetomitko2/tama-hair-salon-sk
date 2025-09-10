@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { Calendar, Clock, User, Phone, Mail, CheckCircle, XCircle, LogOut, Eye } from "lucide-react";
+import { Calendar, Clock, User, Phone, Mail, CheckCircle, XCircle, LogOut, Eye, Trash2 } from "lucide-react";
 import BlackoutDatesManager from "@/components/BlackoutDatesManager";
 import RejectReasonDialog from "@/components/RejectReasonDialog";
 
@@ -30,6 +30,7 @@ const Admin = () => {
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const [reservationToReject, setReservationToReject] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -180,6 +181,39 @@ const Admin = () => {
     }
   };
 
+  const deleteReservation = async (id: string) => {
+    if (deletingId) return;
+    
+    try {
+      setDeletingId(id);
+      
+      const { error } = await supabase
+        .from('reservations')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      // Update local state
+      setReservations(prev => prev.filter(res => res.id !== id));
+
+      toast({
+        title: "Úspech",
+        description: "Rezervácia bola vymazaná",
+      });
+      
+    } catch (error: any) {
+      console.error('Error deleting reservation:', error);
+      toast({
+        title: "Chyba",
+        description: `Nepodarilo sa vymazať rezerváciu: ${error.message || 'Neznáma chyba'}`,
+        variant: "destructive",
+      });
+    } finally {
+      setDeletingId(null);
+    }
+  };
+
   const handleLogout = async () => {
     await supabase.auth.signOut();
     navigate('/auth');
@@ -305,14 +339,26 @@ const Admin = () => {
                   )}
 
                   <div className="flex justify-end pt-4">
-                    <Button 
-                      variant="outline"
-                      onClick={() => navigate(`/admin/${reservation.reservation_number}`)}
-                      className="flex items-center space-x-2"
-                    >
-                      <Eye className="h-4 w-4" />
-                      <span>Detail</span>
-                    </Button>
+                    <div className="flex space-x-2">
+                      <Button 
+                        variant="outline"
+                        onClick={() => navigate(`/admin/${reservation.reservation_number}`)}
+                        className="flex items-center space-x-2"
+                      >
+                        <Eye className="h-4 w-4" />
+                        <span>Detail</span>
+                      </Button>
+                      
+                      <Button 
+                        variant="destructive"
+                        onClick={() => deleteReservation(reservation.id)}
+                        disabled={deletingId === reservation.id}
+                        className="flex items-center space-x-2"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                        <span>{deletingId === reservation.id ? 'Vymazáva sa...' : 'Vymazať'}</span>
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
