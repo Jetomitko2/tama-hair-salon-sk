@@ -16,6 +16,7 @@ interface StatusUpdateData {
   date: string;
   time: string;
   status: 'confirmed' | 'rejected';
+  rejectionReason?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -24,7 +25,7 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { reservationNumber, fullName, email, service, date, time, status }: StatusUpdateData = await req.json();
+    const { reservationNumber, fullName, email, service, date, time, status, rejectionReason }: StatusUpdateData = await req.json();
     
     console.log(`Sending status email to: ${email} for reservation: ${reservationNumber} - Status: ${status}`);
 
@@ -57,6 +58,12 @@ const handler = async (req: Request): Promise<Response> => {
               <p style="font-size: 16px; line-height: 1.6; color: #333;">
                 Ľutujeme, ale Vašu rezerváciu sme museli <strong style="color: ${statusColor};">odmietnuť</strong>.
               </p>
+              ${rejectionReason ? `
+                <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 5px;">
+                  <h4 style="margin: 0 0 10px 0; color: #856404;">Dôvod odmietnutia:</h4>
+                  <p style="margin: 0; color: #856404; font-style: italic;">${rejectionReason}</p>
+                </div>
+              ` : ''}
               <p style="font-size: 16px; line-height: 1.6; color: #333;">
                 Môžete si vybrať iný termín na našej webstránke alebo nás kontaktovať priamo.
               </p>
