@@ -106,18 +106,14 @@ const handler = async (req: Request): Promise<Response> => {
                 </div>
                 
                 <div style="text-align: center; margin: 30px 0;">
-                  <a href="https://kadernictvotama.sk/admin" 
-                     style="background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; margin-right: 10px;">
-                    Prijať
-                  </a>
-                  <a href="https://kadernictvotama.sk/admin" 
-                     style="background-color: #f44336; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block;">
-                    Odmietnuť
+                  <a href="https://kadernictvotama.sk" 
+                     style="background-color: #4CAF50; color: white; padding: 12px 24px; text-decoration: none; border-radius: 5px; display: inline-block; font-weight: bold;">
+                    Prísť na stránku
                   </a>
                 </div>
                 
                 <p style="font-size: 16px; line-height: 1.6; color: #333; margin-top: 30px;">
-                  Kliknite na tlačítka vyššie alebo choďte do admin panelu na spracovanie rezervácie.
+                  Kliknite na tlačítko vyššie pre prístup na webovú stránku.
                 </p>
                 
                 <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; font-size: 14px; color: #666;">
