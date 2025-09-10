@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Calendar, Clock, User, Phone, Mail, CheckCircle, XCircle, LogOut, Eye } from "lucide-react";
+import BlackoutDatesManager from "@/components/BlackoutDatesManager";
+import RejectReasonDialog from "@/components/RejectReasonDialog";
 
 interface Reservation {
   id: string;
@@ -26,6 +28,8 @@ const Admin = () => {
   const [reservations, setReservations] = useState<Reservation[]>([]);
   const [loading, setLoading] = useState(true);
   const [processingId, setProcessingId] = useState<string | null>(null);
+  const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
+  const [reservationToReject, setReservationToReject] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -62,7 +66,12 @@ const Admin = () => {
     }
   };
 
-  const updateReservationStatus = async (id: string, status: 'accepted' | 'rejected') => {
+  const handleReject = (id: string) => {
+    setReservationToReject(id);
+    setRejectDialogOpen(true);
+  };
+
+  const updateReservationStatus = async (id: string, status: 'accepted' | 'rejected', reason?: string) => {
     if (processingId) return;
     
     console.log('=== UPDATING RESERVATION STATUS ===');
@@ -83,7 +92,10 @@ const Admin = () => {
       console.log('About to update with status:', status);
 
       // Update status in database with explicit values
-      const updateData = { status: status };
+      const updateData = { 
+        status: status,
+        ...(reason && { rejection_reason: reason })
+      };
       console.log('Update data:', updateData);
 
       const { data, error } = await supabase
@@ -129,7 +141,8 @@ const Admin = () => {
             service: reservation.service,
             date: new Date(reservation.reservation_date).toLocaleDateString('sk-SK'),
             time: reservation.reservation_time,
-            status: emailStatus
+            status: emailStatus,
+            ...(reason && { rejectionReason: reason })
           }
         });
 
@@ -210,6 +223,9 @@ const Admin = () => {
           </Button>
         </div>
         
+        {/* Blackout Dates Management */}
+        <BlackoutDatesManager />
+
         <div className="grid gap-6">
           {reservations.length === 0 ? (
             <Card>
@@ -278,7 +294,7 @@ const Admin = () => {
                       
                       <Button 
                         variant="destructive"
-                        onClick={() => updateReservationStatus(reservation.id, 'rejected')}
+                        onClick={() => handleReject(reservation.id)}
                         disabled={processingId === reservation.id}
                         className="flex items-center space-x-2"
                       >
@@ -303,6 +319,20 @@ const Admin = () => {
             ))
           )}
         </div>
+
+        {/* Reject Reason Dialog */}
+        <RejectReasonDialog
+          open={rejectDialogOpen}
+          onOpenChange={setRejectDialogOpen}
+          onConfirm={(reason) => {
+            if (reservationToReject) {
+              updateReservationStatus(reservationToReject, 'rejected', reason);
+              setRejectDialogOpen(false);
+              setReservationToReject(null);
+            }
+          }}
+          loading={processingId === reservationToReject}
+        />
       </div>
     </div>
   );

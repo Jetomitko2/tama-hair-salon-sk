@@ -16,6 +16,7 @@ interface StatusEmailRequest {
   date: string;
   time: string;
   status: 'confirmed' | 'rejected';
+  rejectionReason?: string;
 }
 
 const handler = async (req: Request): Promise<Response> => {
@@ -24,7 +25,16 @@ const handler = async (req: Request): Promise<Response> => {
   }
 
   try {
-    const { reservationNumber, fullName, email, service, date, time, status }: StatusEmailRequest = await req.json();
+    const { 
+      reservationNumber, 
+      fullName, 
+      email, 
+      service, 
+      date, 
+      time, 
+      status, 
+      rejectionReason 
+    }: StatusEmailRequest = await req.json();
     
     console.log(`Sending status email to ${email} for reservation ${reservationNumber} - status: ${status}`);
 
@@ -45,6 +55,12 @@ const handler = async (req: Request): Promise<Response> => {
             <p>Vaša rezervácia bola <strong style="color: ${statusColor};">potvrdená</strong>! Tešíme sa na Vás.</p>
           ` : `
             <p>Ľutujeme, ale Vašu rezerváciu sme museli <strong style="color: ${statusColor};">odmietnuť</strong>.</p>
+            ${rejectionReason ? `
+              <div style="background-color: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 15px 0;">
+                <h4 style="margin: 0 0 10px 0; color: #856404;">Dôvod odmietnutia:</h4>
+                <p style="margin: 0; color: #856404;">${rejectionReason}</p>
+              </div>
+            ` : ''}
           `}
           
           <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">

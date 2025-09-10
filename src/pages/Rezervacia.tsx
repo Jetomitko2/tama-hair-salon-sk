@@ -9,7 +9,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CalendarIcon, Clock } from "lucide-react";
-import { format } from "date-fns";
+import { format, startOfDay } from "date-fns";
 import { sk } from "date-fns/locale";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
@@ -18,7 +18,22 @@ import { supabase } from "@/integrations/supabase/client";
 const Rezervacia = () => {
   useEffect(() => {
     document.title = "TAMA-Rezervácia";
+    fetchBlackoutDates();
   }, []);
+
+  const fetchBlackoutDates = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('blackout_dates')
+        .select('date');
+      
+      if (error) throw error;
+      
+      setBlackoutDates(data.map(item => item.date));
+    } catch (error) {
+      console.error('Error fetching blackout dates:', error);
+    }
+  };
 
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -31,6 +46,7 @@ const Rezervacia = () => {
     time: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [blackoutDates, setBlackoutDates] = useState<string[]>([]);
 
   const services = [
     "Stríhanie na sucho krátke vlasy",
@@ -63,7 +79,11 @@ const Rezervacia = () => {
 
   const isDateDisabled = (date: Date) => {
     const day = date.getDay();
-    return day === 0; // Disable Sundays
+    const today = startOfDay(new Date());
+    const dateString = format(date, 'yyyy-MM-dd');
+    
+    // Disable past dates, Sundays, and blackout dates
+    return date < today || day === 0 || blackoutDates.includes(dateString);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

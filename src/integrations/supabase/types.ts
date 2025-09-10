@@ -14,6 +14,30 @@ export type Database = {
   }
   public: {
     Tables: {
+      blackout_dates: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          date: string
+          id: string
+          reason: string | null
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          date: string
+          id?: string
+          reason?: string | null
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          date?: string
+          id?: string
+          reason?: string | null
+        }
+        Relationships: []
+      }
       reservations: {
         Row: {
           created_at: string
@@ -21,6 +45,7 @@ export type Database = {
           full_name: string
           id: string
           phone: string
+          rejection_reason: string | null
           reservation_date: string
           reservation_number: string
           reservation_time: string
@@ -34,6 +59,7 @@ export type Database = {
           full_name: string
           id?: string
           phone: string
+          rejection_reason?: string | null
           reservation_date: string
           reservation_number: string
           reservation_time: string
@@ -47,6 +73,7 @@ export type Database = {
           full_name?: string
           id?: string
           phone?: string
+          rejection_reason?: string | null
           reservation_date?: string
           reservation_number?: string
           reservation_time?: string

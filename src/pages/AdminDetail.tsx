@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { Calendar, Clock, User, Phone, Mail, CheckCircle, XCircle, ArrowLeft } from "lucide-react";
+import RejectReasonDialog from "@/components/RejectReasonDialog";
 
 interface Reservation {
   id: string;
@@ -27,6 +28,7 @@ const AdminDetail = () => {
   const [reservation, setReservation] = useState<Reservation | null>(null);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
+  const [rejectDialogOpen, setRejectDialogOpen] = useState(false);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -57,15 +59,24 @@ const AdminDetail = () => {
     }
   };
 
-  const updateReservationStatus = async (status: 'accepted' | 'rejected') => {
+  const handleReject = () => {
+    setRejectDialogOpen(true);
+  };
+
+  const updateReservationStatus = async (status: 'accepted' | 'rejected', reason?: string) => {
     if (!reservation || processing) return;
     
     try {
       setProcessing(true);
 
+      const updateData = {
+        status,
+        ...(reason && { rejection_reason: reason })
+      };
+
       const { error } = await supabase
         .from('reservations')
-        .update({ status })
+        .update(updateData)
         .eq('id', reservation.id);
 
       if (error) throw error;
@@ -79,7 +90,8 @@ const AdminDetail = () => {
           service: reservation.service,
           date: new Date(reservation.reservation_date).toLocaleDateString('sk-SK'),
           time: reservation.reservation_time,
-          status: status === 'accepted' ? 'confirmed' : 'rejected' // Convert for email
+          status: status === 'accepted' ? 'confirmed' : 'rejected',
+          ...(reason && { rejectionReason: reason })
         }
       });
 
@@ -212,7 +224,7 @@ const AdminDetail = () => {
                 
                 <Button 
                   variant="destructive"
-                  onClick={() => updateReservationStatus('rejected')}
+                  onClick={handleReject}
                   disabled={processing}
                   className="flex items-center space-x-2"
                 >
@@ -223,6 +235,17 @@ const AdminDetail = () => {
             )}
           </CardContent>
         </Card>
+
+        {/* Reject Reason Dialog */}
+        <RejectReasonDialog
+          open={rejectDialogOpen}
+          onOpenChange={setRejectDialogOpen}
+          onConfirm={(reason) => {
+            updateReservationStatus('rejected', reason);
+            setRejectDialogOpen(false);
+          }}
+          loading={processing}
+        />
       </div>
     </div>
   );
