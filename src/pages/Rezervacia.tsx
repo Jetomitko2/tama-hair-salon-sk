@@ -19,19 +19,47 @@ const Rezervacia = () => {
   useEffect(() => {
     document.title = "TAMA-Rezervácia";
     fetchBlackoutDates();
+    fetchReservedTimes();
   }, []);
 
   const fetchBlackoutDates = async () => {
     try {
       const { data, error } = await supabase
         .from('blackout_dates')
-        .select('date');
+        .select('date, time');
       
       if (error) throw error;
       
-      setBlackoutDates(data.map(item => item.date));
+      const dates = data?.filter((item: any) => !item.time).map((item: any) => item.date) || [];
+      const times = data?.filter((item: any) => item.time).map((item: any) => ({ 
+        date: item.date, 
+        time: item.time 
+      })) || [];
+      
+      setBlackoutDates(dates);
+      setBlackoutTimes(times);
     } catch (error) {
       console.error('Error fetching blackout dates:', error);
+    }
+  };
+
+  const fetchReservedTimes = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('reservations')
+        .select('reservation_date, reservation_time')
+        .eq('status', 'accepted');
+      
+      if (error) throw error;
+      
+      const reserved = data?.map(item => ({
+        date: item.reservation_date,
+        time: item.reservation_time
+      })) || [];
+      
+      setReservedTimes(reserved);
+    } catch (error) {
+      console.error('Error fetching reserved times:', error);
     }
   };
 
@@ -47,6 +75,14 @@ const Rezervacia = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [blackoutDates, setBlackoutDates] = useState<string[]>([]);
+  const [blackoutTimes, setBlackoutTimes] = useState<{date: string, time: string}[]>([]);
+  const [reservedTimes, setReservedTimes] = useState<{date: string, time: string}[]>([]);
+
+  useEffect(() => {
+    if (formData.date) {
+      fetchReservedTimes();
+    }
+  }, [formData.date]);
 
   const services = [
     "Stríhanie na sucho krátke vlasy",
@@ -251,24 +287,37 @@ const Rezervacia = () => {
                     </Popover>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label>Čas *</Label>
-                    <Select value={formData.time} onValueChange={(value) => setFormData(prev => ({ ...prev, time: value }))}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Vyberte čas" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {timeSlots.map((time) => (
-                          <SelectItem key={time} value={time}>
-                            <div className="flex items-center">
-                              <Clock className="mr-2 h-4 w-4" />
-                              {time}
-                            </div>
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+                   <div className="space-y-2">
+                     <Label>Čas *</Label>
+                     <Select value={formData.time} onValueChange={(value) => setFormData(prev => ({ ...prev, time: value }))}>
+                       <SelectTrigger>
+                         <SelectValue placeholder="Vyberte čas" />
+                       </SelectTrigger>
+                       <SelectContent>
+                         {timeSlots.map((time) => {
+                           const selectedDateStr = formData.date ? format(formData.date, 'yyyy-MM-dd') : '';
+                           const isTimeBlocked = blackoutTimes.some(bt => 
+                             bt.date === selectedDateStr && bt.time === time
+                           );
+                           const isTimeReserved = reservedTimes.some(rt => 
+                             rt.date === selectedDateStr && rt.time === time
+                           );
+                           const isDisabled = isTimeBlocked || isTimeReserved;
+                           
+                           return (
+                             <SelectItem key={time} value={time} disabled={isDisabled}>
+                               <div className="flex items-center">
+                                 <Clock className="mr-2 h-4 w-4" />
+                                 {time}
+                                 {isTimeBlocked && <span className="ml-2 text-xs text-red-500">(nedostupný)</span>}
+                                 {isTimeReserved && <span className="ml-2 text-xs text-orange-500">(obsadený)</span>}
+                               </div>
+                             </SelectItem>
+                           );
+                         })}
+                       </SelectContent>
+                     </Select>
+                   </div>
 
                   <Button 
                     type="submit" 
