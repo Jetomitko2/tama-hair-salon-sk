@@ -33,7 +33,7 @@ const Rezervacia = () => {
       const dates = data?.filter((item: any) => !item.time).map((item: any) => item.date) || [];
       const times = data?.filter((item: any) => item.time).map((item: any) => ({ 
         date: item.date, 
-        time: item.time 
+        time: (item.time as string).slice(0, 5)
       })) || [];
       
       setBlackoutDates(dates);
@@ -54,7 +54,7 @@ const Rezervacia = () => {
       
       const reserved = data?.map(item => ({
         date: item.reservation_date,
-        time: item.reservation_time
+        time: (item.reservation_time as string).slice(0, 5)
       })) || [];
       
       setReservedTimes(reserved);
@@ -294,27 +294,25 @@ const Rezervacia = () => {
                          <SelectValue placeholder="Vyberte čas" />
                        </SelectTrigger>
                        <SelectContent>
-                         {timeSlots.map((time) => {
-                           const selectedDateStr = formData.date ? format(formData.date, 'yyyy-MM-dd') : '';
-                           const isTimeBlocked = blackoutTimes.some(bt => 
-                             bt.date === selectedDateStr && bt.time === time
-                           );
-                           const isTimeReserved = reservedTimes.some(rt => 
-                             rt.date === selectedDateStr && rt.time === time
-                           );
-                           const isDisabled = isTimeBlocked || isTimeReserved;
-                           
-                           return (
-                             <SelectItem key={time} value={time} disabled={isDisabled}>
-                               <div className="flex items-center">
-                                 <Clock className="mr-2 h-4 w-4" />
-                                 {time}
-                                 {isTimeBlocked && <span className="ml-2 text-xs text-red-500">(nedostupný)</span>}
-                                 {isTimeReserved && <span className="ml-2 text-xs text-orange-500">(obsadený)</span>}
-                               </div>
-                             </SelectItem>
-                           );
-                         })}
+                          {timeSlots.map((time) => {
+                            const selectedDateStr = formData.date ? format(formData.date, 'yyyy-MM-dd') : '';
+                            const isTimeBlocked = blackoutTimes.some(bt => 
+                              bt.date === selectedDateStr && bt.time === time
+                            );
+                            const isTimeReserved = reservedTimes.some(rt => 
+                              rt.date === selectedDateStr && rt.time === time
+                            );
+                            if (isTimeBlocked || isTimeReserved) return null;
+                            
+                            return (
+                              <SelectItem key={time} value={time}>
+                                <div className="flex items-center">
+                                  <Clock className="mr-2 h-4 w-4" />
+                                  {time}
+                                </div>
+                              </SelectItem>
+                            );
+                          })}
                        </SelectContent>
                      </Select>
                    </div>
