@@ -48,7 +48,7 @@ const Rezervacia = () => {
       const { data, error } = await supabase
         .from('reservations')
         .select('reservation_date, reservation_time')
-        .eq('status', 'accepted');
+        .in('status', ['pending', 'accepted']);
       
       if (error) throw error;
       
